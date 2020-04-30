@@ -52,10 +52,13 @@ export function addNewStock(obj, pcs) {
 }
 
 export function getStockPricesFor(codes) {
-  return fetch(
-    "https://financialmodelingprep.com/api/v3/company/profile/" +
-      codes.join(",")
-  )
-    .then((res) => res.json())
-    .then((res) => console.log(res));
-}
+    return fetch(
+      "https://financialmodelingprep.com/api/v3/company/profile/" +
+        codes.join(",")
+    )
+      .then((res) => res.json())
+      .then((res) =>  res.companyProfiles.map(item=>item.profile.price));
+  }
+  
+  getStockPricesFor(['SPY','MU','NKE'])
+
