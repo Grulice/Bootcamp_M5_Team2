@@ -4,12 +4,16 @@ import styled from "styled-components";
 const Row = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 
+  height: 70px;
   padding: 15px 10px;
-  border-top: 0.5px dashed lightgrey;
   border-bottom: 0.5px dashed lightgrey;
   &:hover {
     background-color: rgba(131, 58, 224, 0.05);
+  }
+  &:last-child {
+    border-bottom: none;
   }
 `;
 
