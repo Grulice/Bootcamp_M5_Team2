@@ -89,7 +89,7 @@ class Stocks extends Component {
         <Search value={value} handleChange={this.handleSearch} />
         {rows.length !== 0 
         ?  <Paginator rowElems={rows} rowsNum={rows.length} /> 
-        :  <h2>Not Found</h2>
+        : value===''? <h2> Loading ... </h2>: <h2>Not Found</h2>
         }
       </Container>
     );
