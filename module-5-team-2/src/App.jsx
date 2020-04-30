@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./index.css";
+import Account from "./account/Account";
 
 class App extends Component {
   constructor(props) {
