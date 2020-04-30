@@ -1,4 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-import "./stocks.css";
+class Stocks extends React.Component{
+    render() {
+        return(
+            <div>
+                <p>Stocks</p>
+            </div>
+        )
+    }
+}
+export default Stocks;
+
 

@@ -3,3 +3,16 @@
     margin: 0;
     padding: 0;
 }
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+#root{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 1152px;
+    width: 100%;
+}
