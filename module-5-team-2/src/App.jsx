@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import "./index.css";
+import Stocks from "./stocks/Stocks";
+
+
 
 class App extends Component {
   constructor(props) {
@@ -7,7 +10,9 @@ class App extends Component {
     this.state = {};
   }
   render() {
-    return <div></div>;
+    return <div>
+      <Stocks />
+    </div>;
   }
 }
 
