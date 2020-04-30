@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Search from "./Search";
 import Rows from "./Rows";
 import RowDivs from "./RowDivs";
+import { Link } from "react-router-dom";
 import Paginator from "./Paginator";
 import * as fetcher from "../fetcher/Fetcher";
 import styled from "styled-components";
@@ -15,6 +16,14 @@ const Container = styled.main`
   display: flex;
   flex-direction: column;
   padding: 0 20%;
+  h2 {
+    text-align: center;
+  }
+  a {
+    text-decoration: none;
+    font-family: "Roboto", sans-serif;
+    
+  }
 `;
 
 class Stocks extends Component {
@@ -22,7 +31,8 @@ class Stocks extends Component {
     super(props);
     this.state = {
       allStocks: [],
-      value: ''
+      filteredStocks: [],
+      value: "",
     };
   }
 
@@ -30,34 +40,57 @@ class Stocks extends Component {
     fetcher.getStockData().then((res) => {
       this.setState({
         allStocks: res.symbolsList,
+        filteredStocks: res.symbolsList
       });
     });
   }
 
-  handleSearch = (value)=>{
+  handleSearch = (value) => {
+    const upperValue = value.toUpperCase();
+    const searchResult = this.state.allStocks.filter((stock) => {
+      return stock.symbol.includes(upperValue);
+    });
+
     this.setState({
-      value: value
-    })
-  }
+      value: value,
+      filteredStocks: searchResult,
+    });
+  };
 
   render() {
-
-    const {allStocks, value} = this.state;
-        const rows = allStocks.map((symbol) => {
+    const { filteredStocks, value } = this.state;
+    const rows = filteredStocks.map((symbol) => {
       return (
-        <Rows
-          divs={[
-            <RowDivs div1={symbol.symbol} div2={symbol.name} div3={symbol.price}/>
-          ]}
-        />
+        <Link
+          to={{
+            pathname: "/Buy",
+            state: {
+              symbol: symbol.symbol,
+              name: symbol.name,
+              price: symbol.price,
+            },
+          }}
+        >
+          <Rows
+            divs={[
+              <RowDivs
+                div1={symbol.symbol}
+                div2={symbol.name}
+                div3={symbol.price}
+              />,
+            ]}
+          />
+        </Link>
       );
     });
-    
-      
+
     return (
       <Container>
-        <Search value={value} handleChange={this.handleSearch}/>
-        <Paginator rowElems={rows} rowsNum={rows.length} />
+        <Search value={value} handleChange={this.handleSearch} />
+        {rows.length !== 0 
+        ?  <Paginator rowElems={rows} rowsNum={rows.length} /> 
+        :  <h2>Not Found</h2>
+        }
       </Container>
     );
   }

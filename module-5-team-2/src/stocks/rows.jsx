@@ -8,13 +8,14 @@ const Row = styled.div`
 
   height: 70px;
   padding: 15px 10px;
-  border-bottom: 0.5px dashed lightgrey;
+  border-bottom: 0.5px dashed lightgrey !important; 
+  &:last-child {
+    border-bottom: none ;
+  }
   &:hover {
     background-color: rgba(131, 58, 224, 0.05);
   }
-  &:last-child {
-    border-bottom: none;
-  }
+ 
 `;
 
 class RowElement extends Component {
