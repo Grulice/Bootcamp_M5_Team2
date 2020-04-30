@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import {getUserBalance} from "../fetcher/Fetcher";
 
 const FooterBlock = styled.div`
   width: 100%;
@@ -28,14 +29,34 @@ const CurrentBalance = styled.p`
   }
 `;
 class Footer extends React.Component {
+  state ={
+    balance:null
+  };
+  numberAfterDot = (value) =>{
+    if(value) {
+      const digits = value.substring(value.indexOf('.') + 1);
+      return digits;
+    }
+    else return null;
+  } ;
   render() {
+    getUserBalance().then(balance => this.setState({balance:balance.currentBalance.toFixed(2)}));
+    const currentBalance =() => {
+      if(this.state.balance){
+        return [
+          <CurrentBalance>
+            {Math.trunc(this.state.balance)}
+            <span>.{this.numberAfterDot(this.state.balance)}$</span>
+          </CurrentBalance>
+        ];}
+      else return [<span>Loading....</span>]
+    };
+
     return (
       <FooterBlock>
         <div>
           <p>Balance:</p>
-          <CurrentBalance>
-            568.<span>76$</span>
-          </CurrentBalance>
+          {currentBalance()}
         </div>
       </FooterBlock>
     );
