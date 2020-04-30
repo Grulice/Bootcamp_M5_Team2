@@ -10,6 +10,7 @@ const SearchBar = styled.div`
   background: #f3f3f3;
   align-items: center;
   margin-top: 30px;
+  margin-bottom: 15px;
 `;
 
 const Lens = styled.img`
@@ -35,10 +36,11 @@ class Search extends Component {
     this.state = {};
   }
   render() {
+    const {value, handleChange}= this.props;
     return (
       <SearchBar>
         <Lens src="./images/lens.svg" alt="Lens icon" />
-        <SearchInput type="text" maxLength={3} />
+        <SearchInput type="text" placeholder='enter company ticker' value={value}  onChange={(e)=>{handleChange(e.target.value)}} />
       </SearchBar>
     );
   }
