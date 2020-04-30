@@ -17,6 +17,7 @@ const AppBlock = styled.div`
      padding: 15px;
 `;
 
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -35,6 +36,7 @@ class App extends Component {
           <Footer/>
         </AppBlock>
     )
+
   }
 }
 
