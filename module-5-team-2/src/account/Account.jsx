@@ -1,10 +1,11 @@
-
 import React, { Component } from "react";
 import AccountRowElement from "./AccountRowElement";
 import Paginator from "./Paginator";
 import styled from "styled-components";
 
-const AccountPage = styled.div``;
+const AccountPage = styled.div`
+  width: 100%;
+`;
 
 const Header = styled.div`
   display: flex;
