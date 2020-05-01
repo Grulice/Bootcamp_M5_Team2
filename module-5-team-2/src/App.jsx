@@ -33,8 +33,9 @@ class App extends Component {
           <Switch>
             <Route path="/Account" exact component={Account} />
             <Route path="/Stock" component={Stocks} />
-           <Route path="/Account" component={Account} />
-           <Route path="/Buy" component={Buy} />
+
+            <Route path="/Buy" component={Buy} />
+            <Route path="/" component={Account} />
           </Switch>
         </Router>
         <Footer />
