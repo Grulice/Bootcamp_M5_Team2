@@ -14,16 +14,10 @@ class Paginator extends Component {
     this.state = { curPage: 0, pageAmount: 0 };
   }
 
-  componentDidMount() {
-    this.setState({
-      pageAmount: Math.ceil(this.props.rowElems.length / PAGE_SIZE),
-    });
-  }
-
   incrementIndex = (e) => {
     const newPage =
-      this.state.curPage + 1 === this.state.pageAmount
-        ? this.state.pageAmount - 1
+      this.state.curPage + 1 === Math.ceil(this.props.rowElems.length / PAGE_SIZE)
+        ? Math.ceil(this.props.rowElems.length / PAGE_SIZE) - 1
         : this.state.curPage + 1;
     this.setState({ curPage: newPage });
   };
@@ -47,7 +41,7 @@ class Paginator extends Component {
           )}
         </Page>
         <PaginatorPageBar
-          pageAmount={this.props.rowElems.length / PAGE_SIZE}
+          pageAmount={Math.ceil(this.props.rowElems.length / PAGE_SIZE)}
           onChange={this.handleChangePage}
           incrCallback={this.incrementIndex}
           decrCallback={this.decrementIndex}
