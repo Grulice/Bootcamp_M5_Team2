@@ -65,12 +65,13 @@ class Stocks extends Component {
 
   render() {
     const { filteredStocks, value } = this.state;
-    const rows = filteredStocks.map((symbol) => {
+    const rows = filteredStocks.map((symbol, id) => {
       return (
         <Link
           to={{
             pathname: "/Buy",
             state: {
+              key: id,
               symbol: symbol.symbol,
               name: symbol.name,
               price: symbol.price,
@@ -80,6 +81,7 @@ class Stocks extends Component {
           <Rows
             divs={[
               <RowDivs
+                key={id}
                 div1={symbol.symbol}
                 div2={symbol.name}
                 div3={symbol.price}
