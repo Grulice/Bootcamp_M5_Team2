@@ -44,7 +44,7 @@ class RowDivs extends Component {
       </>
     );
   };
-  
+
   render() {
     const { div1, div2, div3 } = this.props;
     return (
