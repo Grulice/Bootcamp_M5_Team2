@@ -29,32 +29,66 @@ class PaginatorPageBar extends Component {
     this.props.onChange(btnNum);
   };
 
+  getButton = (pageNum) => {
+    return (
+      <PaginatorButton
+        key={pageNum} // for React's internal engine
+        isSelected={this.props.curSelectedPage === pageNum ? true : false}
+        buttonNum={pageNum}
+        handleBtnClick={this.clickHandler}
+      />
+    );
+  };
+
   getPageNumButtons = () => {
     let btns = [];
-    const dots = <>...</>;
     const { pageAmount, curSelectedPage } = this.props;
 
-    if (pageAmount > 6) {
-    }
+    const lastPageButton = (
+      <React.Fragment key="btnFirstWrapper">
+        &nbsp; ... &nbsp;
+        {this.getButton(pageAmount)}
+      </React.Fragment>
+    );
+
+    const firstPageButton = (
+      <React.Fragment key="btnLastWrapper">
+        {this.getButton(1)}
+        ... &nbsp;
+      </React.Fragment>
+    );
+
+    const distToLastPage = pageAmount - curSelectedPage;
+    const distToFirstPage = curSelectedPage - 1;
+
+    const neighborhoodButtons = [];
+    if (curSelectedPage - 2 >= 1)
+      neighborhoodButtons.push(this.getButton(curSelectedPage - 2));
+    if (curSelectedPage - 1 >= 1)
+      neighborhoodButtons.push(this.getButton(curSelectedPage - 1));
+    neighborhoodButtons.push(this.getButton(curSelectedPage));
+    if (curSelectedPage + 1 <= pageAmount)
+      neighborhoodButtons.push(this.getButton(curSelectedPage + 1));
+    if (curSelectedPage + 2 <= pageAmount)
+      neighborhoodButtons.push(this.getButton(curSelectedPage + 2));
+    if (distToLastPage > 2) neighborhoodButtons.push(lastPageButton);
+    if (distToFirstPage > 2) neighborhoodButtons.unshift(firstPageButton);
+    btns.push([...neighborhoodButtons]);
+
+    return btns;
   };
 
   render() {
-    let btns = [];
-    for (let i = 1; i <= this.props.pageAmount; i++) {
-      btns.push(
-        <PaginatorButton
-          key={i} // for React's internal engine
-          isSelected={this.props.curSelectedPage === i ? true : false}
-          buttonNum={i}
-          handleBtnClick={this.clickHandler}
-        />
-      );
-    }
+    const btns = this.getPageNumButtons();
     return (
       <MainBar>
-        <IncDecButton onClick={this.props.decrCallback}>&lt;</IncDecButton>
+        <IncDecButton onClick={this.props.decrCallback}>
+          &lt;
+        </IncDecButton>
         {btns}
-        <IncDecButton onClick={this.props.incrCallback}>&gt;</IncDecButton>
+        <IncDecButton onClick={this.props.incrCallback}>
+          &gt;
+        </IncDecButton>
       </MainBar>
     );
   }

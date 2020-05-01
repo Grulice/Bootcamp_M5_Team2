@@ -68,6 +68,7 @@ class Stocks extends Component {
     const rows = filteredStocks.map((symbol, id) => {
       return (
         <Link
+          key={id}
           to={{
             pathname: "/Buy",
             state: {
@@ -97,7 +98,7 @@ class Stocks extends Component {
         <Search value={value} handleChange={this.handleSearch} />
 
         {rows.length !== 0 ? (
-          <Paginator rowElems={rows}/>
+          <Paginator rowElems={rows} />
         ) : value === "" ? (
           <h2> Loading ... </h2>
         ) : (
