@@ -4,14 +4,22 @@ import styled from "styled-components";
 const Button = styled.button`
   cursor: pointer;
   border: none;
-  height: 20px;
-  width: 20px;
+  height: 30px;
+  width: 30px;
   margin: 0 3px;
 
   background-color: white;
 
   color: ${(props) => (props.selected ? "blueviolet" : "black")};
   font-weight: ${(props) => (props.selected ? "bold" : "normal")};
+
+  &:hover {
+    border: 0.5px solid black;
+  }
+
+  &:active {
+    color: #ffdc40;
+  }
 `;
 
 class PaginatorButton extends Component {
@@ -25,7 +33,7 @@ class PaginatorButton extends Component {
         onClick={() => this.props.handleBtnClick(this.props.buttonNum)}
         selected={this.props.isSelected}
       >
-        {this.props.buttonNum + 1}
+        {this.props.buttonNum}
       </Button>
     );
   }

@@ -10,9 +10,9 @@ import styled from "styled-components";
 const Container = styled.main`
   width: 100%;
   min-height: calc(100vh - 90px - 90px);
-  -webkit-box-shadow: inset 0px 11px 6px 0px rgba(189, 189, 189, 0.87);
-  -moz-box-shadow: inset 0px 11px 6px 0px rgba(189, 189, 189, 0.87);
-  box-shadow: inset 0px 11px 6px 0px rgba(189, 189, 189, 0.87);
+  -webkit-box-shadow: inset 0px 6px 6px -6px gray;
+  -moz-box-shadow: inset 0px 6px 6px -6px gray;
+  box-shadow: inset 0px 6px 6px -6px gray;
   margin-top: 20px;
   margin-bottom: 90px;
   display: flex;
@@ -32,7 +32,6 @@ const Container = styled.main`
     }
   }
 `;
-
 class Stocks extends Component {
   constructor(props) {
     super(props);
@@ -68,6 +67,7 @@ class Stocks extends Component {
     const rows = filteredStocks.map((symbol, id) => {
       return (
         <Link
+          key={id}
           to={{
             pathname: "/Buy",
             state: {
@@ -97,7 +97,7 @@ class Stocks extends Component {
         <Search value={value} handleChange={this.handleSearch} />
 
         {rows.length !== 0 ? (
-          <Paginator rowElems={rows}/>
+          <Paginator rowElems={rows} />
         ) : value === "" ? (
           <h2> Loading ... </h2>
         ) : (
