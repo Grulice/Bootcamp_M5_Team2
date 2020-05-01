@@ -10,7 +10,9 @@ import styled from "styled-components";
 const Container = styled.main`
   width: 100%;
   min-height: calc(100vh - 90px - 90px);
-  border-top: 3px solid #e5e5e5;
+  -webkit-box-shadow: inset 0px 11px 6px -4px rgba(189, 189, 189, 0.87);
+  -moz-box-shadow: inset 0px 11px 6px -4px rgba(189, 189, 189, 0.87);
+  box-shadow: inset 0px 11px 6px -4px rgba(189, 189, 189, 0.87);
   margin-top: 20px;
   margin-bottom: 90px;
   display: flex;
@@ -22,7 +24,6 @@ const Container = styled.main`
   a {
     text-decoration: none;
     font-family: "Roboto", sans-serif;
-    
   }
 `;
 
@@ -40,7 +41,7 @@ class Stocks extends Component {
     fetcher.getStockData().then((res) => {
       this.setState({
         allStocks: res.symbolsList,
-        filteredStocks: res.symbolsList
+        filteredStocks: res.symbolsList,
       });
     });
   }
@@ -87,10 +88,13 @@ class Stocks extends Component {
     return (
       <Container>
         <Search value={value} handleChange={this.handleSearch} />
-        {rows.length !== 0 
-        ?  <Paginator rowElems={rows} rowsNum={rows.length} /> 
-        : value===''? <h2> Loading ... </h2>: <h2>Not Found</h2>
-        }
+        {rows.length !== 0 ? (
+          <Paginator rowElems={rows} rowsNum={rows.length} />
+        ) : value === "" ? (
+          <h2> Loading ... </h2>
+        ) : (
+          <h2>Not Found</h2>
+        )}
       </Container>
     );
   }
