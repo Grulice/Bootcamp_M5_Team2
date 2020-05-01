@@ -25,7 +25,14 @@ class RowElement extends Component {
 
   render() {
     const divsToRender = this.props.divs;
-    return <Row>{divsToRender}</Row>;
+    return (
+    
+    <Row>
+      {divsToRender}
+
+    </Row>
+    
+    );
   }
 }
 

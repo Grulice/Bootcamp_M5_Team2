@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 
 import AccountRowElement from "./AccountRowElement";
-import Paginator from "./Paginator";
+import Paginator from "../commonUI/Paginator";
 import * as fetcher from "../fetcher/Fetcher";
 
 const AccountPage = styled.div`
