@@ -13,7 +13,7 @@ const Header = styled.div`
   display: flex;
   flex-direction: column;
   padding-bottom: 30px;
-  box-shadow: 0 6px 6px -6px gray;
+  /* box-shadow: 0 6px 6px -6px gray; */
 `;
 
 const TotalSum = styled.h1`
@@ -27,6 +27,9 @@ const Profit = styled.p`
 
 const Body = styled.div`
   padding: 20px 20%;
+  -webkit-box-shadow: inset 0px 6px 6px -6px gray;
+  -moz-box-shadow: inset 0px 6px 6px -6px gray;
+  box-shadow: inset 0px 6px 6px -6px gray;
 `;
 
 const DecPartSpan = styled.span`
