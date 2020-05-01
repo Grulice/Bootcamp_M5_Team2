@@ -35,7 +35,7 @@ const DecPartSpan = styled.span`
   font-size: 0.7em;
 `;
 
-class RowDivs extends Component {
+class RowParts extends Component {
   splitDecimals = (number) => {
     const [wholePart, decPart] = number.toString().split(".");
     return (
@@ -57,4 +57,4 @@ class RowDivs extends Component {
   }
 }
 
-export default RowDivs;
+export default RowParts;

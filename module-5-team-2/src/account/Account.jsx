@@ -36,50 +36,69 @@ const DecPartSpan = styled.span`
 class Account extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
-    this.accountInfo = [];
+    this.state = {
+      accountInfo: [],
+      stocksInfo: [],
+      totalSpent: 0,
+      currentTotal: 0,
+      profit: 0,
+      isProfitNegative: false,
+    };
   }
-
-  generateRandomUserStocks = () => {
-    for (let i = 0; i < 25; i++) {
-      const curStockObj = {
-        symbol: `${i}TEST`,
-        name: `TESTNAME`,
-        price: `${(Math.random() * 1000).toFixed(3)}`,
-      };
-      fetcher.addNewStock(curStockObj, Math.round(Math.random() * 30));
-    }
-  };
-
-  deleteAllStocks = async () => {
-    let curStocks = await fetcher.getUserStocks();
-    for (let stock of curStocks) {
-      const id = stock.id;
-      fetch(
-        "https://5e8da89e22d8cd0016a798db.mockapi.io/users/2/stocks/" + id,
-        {
-          method: "DELETE",
-        }
-      );
-    }
-  };
 
   componentDidMount() {
     fetcher.getUserStocks().then((res) => {
-      this.accountInfo = res;
-      this.forceUpdate();
+      // if(!res) {resolve()};
+      let accountInfo = res;
+      let codes = res.map((el) => {
+        return el.code;
+      });
+      fetcher.getStockPricesFor(codes).then((stocks) => {
+        let stocksInfo = stocks;
+        let totalSpent = this.getPurchaseDayTotalSum(accountInfo);
+        let currentTotal = this.getCurrentTotalSum(stocksInfo, accountInfo);
+        let profit = currentTotal - totalSpent;
+        let negative = profit >= 0 ? false : true;
+
+        this.setState({
+          accountInfo: accountInfo,
+          stocksInfo: stocksInfo,
+          totalSpent: totalSpent,
+          currentTotal: currentTotal,
+          profit: profit,
+          isProfitNegative: negative,
+        });
+      });
     });
   }
 
-  getTotalSum = () =>
-    this.accountInfo
+  getPurchaseDayTotalSum = (accountInfo) => {
+    return accountInfo
       .reduce((acc, currentStock) => {
         return acc + currentStock.totalPrice;
       }, 0)
       .toFixed(3);
+  };
+
+  getCurrentTotalSum = (stocksInfo, accountInfo) => {
+    return stocksInfo
+      .map((stock) => {
+        const necStock = accountInfo.filter((el) => {
+          return el.code === stock.symbol;
+        });
+        let amount = necStock.reduce((acc, currentStock) => {
+          return acc + Number(currentStock.amount);
+        }, 0);
+        return stock.price * amount;
+      })
+      .reduce((prev, currStock) => {
+        return prev + currStock;
+      }, 0)
+      .toFixed(3);
+  };
 
   splitDecimals = (number) => {
-    if (number == 0) return <>&nbsp;</>;
+    if (number == 0) return <>No profit</>;
     const [wholePart, decPart] = number.toString().split(".");
     return (
       <>
@@ -88,18 +107,48 @@ class Account extends Component {
     );
   };
 
+  calculateProfitPercentage = (buyPrice, currPrice) => {
+    let profit = currPrice - buyPrice;
+    let percent = (profit / buyPrice) * 100;
+    if (profit == 0) {
+      return <>No profit</>;
+    } else {
+      return (
+        <>
+          {this.splitDecimals(profit.toFixed(2))} ({percent.toFixed(2)}%)
+        </>
+      );
+    }
+  };
+
+  findCurrentPrice(stocksInfo, info) {
+    return stocksInfo.find((el) => el.symbol === info.code).price * info.amount;
+  }
+
   render() {
-    const rowelems = this.accountInfo.map((info) => (
-      <AccountRowElement {...info} />
-    ));
+    const { accountInfo, stocksInfo, totalSpent, currentTotal } = this.state;
+    const rowelems = accountInfo.map((info) => {
+      const curStockPrice = this.findCurrentPrice(stocksInfo, info);
+      const curprofit = this.calculateProfitPercentage(
+        info.totalPrice,
+        curStockPrice
+      );
+      return (
+        <AccountRowElement
+          {...info}
+          profit={curprofit}
+          isNegative={info.totalPrice - this.findCurrentPrice(stocksInfo, info)>0? true: false}
+        />
+      );
+    });
     return (
       <AccountPage>
         <Header>
-          <TotalSum>{this.splitDecimals(this.getTotalSum())}</TotalSum>
-          <Profit isNegative={this.state.isProfitNegative}>PLACEHOLDER</Profit>
+          <TotalSum>{this.splitDecimals(currentTotal)}</TotalSum>
+          <Profit isNegative={this.state.isProfitNegative}>
+            {this.calculateProfitPercentage(totalSpent, currentTotal)}
+          </Profit>
         </Header>
-        {/* <button onClick={this.generateRandomUserStocks}>Gen Stocks</button>
-        <button onClick={this.deleteAllStocks}>Delete Stocks</button> */}
         <Body>
           <Paginator rowElems={rowelems} />
         </Body>

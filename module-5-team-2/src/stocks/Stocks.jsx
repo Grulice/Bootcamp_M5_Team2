@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Search from "./Search";
 import Rows from "./Rows";
-import RowDivs from "./RowDivs";
+import RowParts from "./RowParts";
 import Paginator from "../commonUI/Paginator";
 import { Link } from "react-router-dom";
 import * as fetcher from "../fetcher/Fetcher";
@@ -80,7 +80,7 @@ class Stocks extends Component {
         >
           <Rows
             divs={[
-              <RowDivs
+              <RowParts
                 key={id}
                 div1={symbol.symbol}
                 div2={symbol.name}
