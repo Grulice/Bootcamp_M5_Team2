@@ -33,7 +33,6 @@ const DecPartSpan = styled.span`
   font-size: 0.7em;
 `;
 
-
 class Account extends Component {
   constructor(props) {
     super(props);
@@ -75,7 +74,6 @@ class Account extends Component {
   getTotalSum = () =>
     this.accountInfo
       .reduce((acc, currentStock) => {
-        console.log(acc, currentStock.totalPrice);
         return acc + currentStock.totalPrice;
       }, 0)
       .toFixed(3);
