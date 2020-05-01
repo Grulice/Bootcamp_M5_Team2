@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../img/Logo.svg";
-
+// Стили Компонента Header Начало
 const HeaderBlock = styled.div`
   position: sticky;
   top: 0;
@@ -25,14 +25,20 @@ const HeaderBlock = styled.div`
     font-family: "Roboto", sans-serif;
     padding: 8px;
   }
-  a:active,
-  a:focus,
-  a:hover {
+  a:active,a:focus{
     color: #833ae0;
     border-bottom: 1px solid #833ae0;
     margin-bottom: -1px;
   }
+  a:hover {
+    color: #FFDC40;
+    border-bottom: 1px solid #000000;
+    margin-bottom: -1px;
+  }
 `;
+// Стили Компонента Header Конец
+
+
 class Header extends React.Component {
   render() {
     return (
