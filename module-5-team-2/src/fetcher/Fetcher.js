@@ -52,13 +52,17 @@ export function addNewStock(obj, pcs) {
 }
 
 export function getStockPricesFor(codes) {
-    return fetch(
-      "https://financialmodelingprep.com/api/v3/company/profile/" +
-        codes.join(",")
-    )
-      .then((res) => res.json())
-      .then((res) =>  res.companyProfiles.map(item=>item.profile.price));
-  }
-  
-  getStockPricesFor(['SPY','MU','NKE'])
+  return fetch(
+    "https://financialmodelingprep.com/api/v3/company/profile/" +
+      codes.join(",")
+  )
+    .then((res) => res.json())
+    .then((res) =>
+      res.companyProfiles.map((item) => {
+        console.log({ symbol: item.symbol, price: item.profile.price });
+        return { symbol: item.symbol, price: item.profile.price };
+      })
+    );
+}
 
+getStockPricesFor(["SPY", "MU", "NKE"]);

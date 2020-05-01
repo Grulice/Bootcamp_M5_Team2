@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import Search from "./Search";
 import Rows from "./Rows";
 import RowDivs from "./RowDivs";
-import Paginator from "./Paginator";
+import Paginator from "../commonUI/Paginator";
 import * as fetcher from "../fetcher/Fetcher";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const Container = styled.main`
   width: 100%;
@@ -22,7 +23,7 @@ class Stocks extends Component {
     super(props);
     this.state = {
       allStocks: [],
-      value: ''
+      value: "",
     };
   }
 
@@ -34,29 +35,33 @@ class Stocks extends Component {
     });
   }
 
-  handleSearch = (value)=>{
+  handleSearch = (value) => {
     this.setState({
-      value: value
-    })
-  }
+      value: value,
+    });
+  };
 
   render() {
-
-    const {allStocks, value} = this.state;
-        const rows = allStocks.map((symbol) => {
+    const { allStocks, value } = this.state;
+    const rows = allStocks.map((symbol) => {
       return (
-        <Rows
-          divs={[
-            <RowDivs div1={symbol.symbol} div2={symbol.name} div3={symbol.price}/>
-          ]}
-        />
+        <Link >
+          <Rows
+            divs={[
+              <RowDivs
+                div1={symbol.symbol}
+                div2={symbol.name}
+                div3={symbol.price}
+              />,
+            ]}
+          />
+        </Link>
       );
     });
-    
-      
+
     return (
       <Container>
-        <Search value={value} handleChange={this.handleSearch}/>
+        <Search value={value} handleChange={this.handleSearch} />
         <Paginator rowElems={rows} rowsNum={rows.length} />
       </Container>
     );
