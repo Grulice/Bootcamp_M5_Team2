@@ -36,7 +36,6 @@ const CurrentBalance = styled.p`
 //Стили Компонента Footer Конец
 
 
-
 class Footer extends React.Component {
   state ={
     balance:null
@@ -49,13 +48,16 @@ class Footer extends React.Component {
     }
     else return null;
   } ;
+  componentDidMount() {
+    this.getBalance();
+  }
 
-
-  render() {
-
-    // Запрос и запись state значения баланса пользователя
+  getBalance = () =>{
     getUserBalance().then(balance => this.setState({balance:balance.currentBalance.toFixed(2)}));
-
+  };
+  render() {
+    // Запрос и запись state значения баланса пользователя
+    
     // Элемент рисующий баланс пользователя
     const currentBalance =() => {
       if(this.state.balance){
