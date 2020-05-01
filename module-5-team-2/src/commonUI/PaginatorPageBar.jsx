@@ -3,20 +3,34 @@ import PaginatorButton from "./PaginatorButton";
 import styled from "styled-components";
 
 const MainBar = styled.div`
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* text-align: center; */
 `;
 
 const IncDecButton = styled.button`
   cursor: pointer;
   border: none;
-  height: 20px;
-  width: 20px;
+  height: 30px;
+  width: 30px;
   margin: 0 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   background-color: white;
 
   color: ${(props) => (props.selected ? "blueviolet" : "black")};
   font-weight: ${(props) => (props.selected ? "bold" : "normal")};
+
+  &:hover {
+    border: 0.5px solid black;
+  }
+
+  &:active svg path {
+    stroke: #ffdc40;
+  }
 `;
 
 class PaginatorPageBar extends Component {
@@ -83,11 +97,33 @@ class PaginatorPageBar extends Component {
     return (
       <MainBar>
         <IncDecButton onClick={this.props.decrCallback}>
-          &lt;
+          <svg
+            width="13"
+            height="13"
+            viewBox="0 0 13 13"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M6.5653 0.869513L1 6.43481L6.5653 12.0001"
+              stroke="#833AE0"
+            />
+          </svg>
         </IncDecButton>
         {btns}
         <IncDecButton onClick={this.props.incrCallback}>
-          &gt;
+          <svg
+            width="12"
+            height="13"
+            viewBox="0 0 12 13"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M5.56531 0.869513L11.1306 6.43481L5.56531 12.0001"
+              stroke="#833AE0"
+            />
+          </svg>
         </IncDecButton>
       </MainBar>
     );

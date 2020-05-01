@@ -33,6 +33,11 @@ class Paginator extends Component {
     this.setState({ curPage: selectedPage });
   };
 
+  componentDidUpdate() {
+    if (this.state.curPage > Math.ceil(this.props.rowElems.length / PAGE_SIZE))
+      this.setState({ curPage: 1 });
+  }
+
   render() {
     return (
       <PaginatorMain>
