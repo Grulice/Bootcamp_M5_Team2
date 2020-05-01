@@ -38,7 +38,7 @@ class Header extends React.Component {
     return (
       <HeaderBlock>
         <ul>
-          <Link to="/">
+          <Link to="/Account">
             <li>Account</li>
           </Link>
           <Link to="/Stock">

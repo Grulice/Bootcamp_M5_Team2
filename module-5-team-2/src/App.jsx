@@ -4,6 +4,7 @@ import Header from "./navigation/Header";
 import Footer from "./navigation/Footer";
 import Account from "./account/Account";
 import Stocks from "./stocks/Stocks";
+import Buy from "./buy/Buy";
 import styled from "styled-components";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
@@ -30,8 +31,10 @@ class App extends Component {
         <Router>
           <Header />
           <Switch>
-            <Route path="/" exact component={Account} />
+            <Route path="/Account" exact component={Account} />
             <Route path="/Stock" component={Stocks} />
+           <Route path="/Account" component={Account} />
+           <Route path="/Buy" component={Buy} />
           </Switch>
         </Router>
         <Footer />
