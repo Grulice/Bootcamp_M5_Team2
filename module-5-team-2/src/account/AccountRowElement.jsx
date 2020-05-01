@@ -69,8 +69,10 @@ class RowElement extends Component {
     );
   };
 
+ 
+
   render() {
-    const { code, name, amount, purchasePrice, profit } = this.props;
+    const { code, name, amount, purchasePrice, profit, isNegative } = this.props;
     return (
       <RowContainer>
         <Row>
@@ -81,13 +83,14 @@ class RowElement extends Component {
           <RowElemSumDiv>
             {this.splitDecimals((amount * purchasePrice).toFixed(3))}
           </RowElemSumDiv>
-          <RowElemProfitDiv isNegative={profit < 0}>
-            {(profit < 0 ? "▼ " : "▲ ") + profit}
+          <RowElemProfitDiv isNegative={isNegative}>
+            {(isNegative ? "▼ " :  "▲ ") } {profit}
           </RowElemProfitDiv>
         </Row>
       </RowContainer>
     );
   }
 }
+
 
 export default RowElement;

@@ -51,16 +51,15 @@ export function addNewStock(obj) {
   });
 }
 
-export function getStockPricesFor(codes) {
+export function getStockPricesFor(codes) {  
+  let codesString = codes.join(",");
   return fetch(
-    "https://financialmodelingprep.com/api/v3/company/profile/" +
-      codes.join(",")
+    `https://financialmodelingprep.com/api/v3/quote/${codesString}`
   )
     .then((res) => res.json())
     .then((res) =>
-      res.companyProfiles.map((item) => {
-        // console.log({ symbol: item.symbol, price: item.profile.price });
-        return { symbol: item.symbol, price: item.profile.price };
+      res.map((item) => {
+        return { symbol: item.symbol, price: item.price };
       })
     );
 }
