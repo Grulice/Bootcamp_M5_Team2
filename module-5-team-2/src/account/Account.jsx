@@ -32,10 +32,16 @@ const Body = styled.div`
 const DecPartSpan = styled.span`
   font-size: 0.7em;
 `;
-
+const Loading = styled.h2`
+  position: absolute;
+  left: 46%;
+  top: 240px;
+  
+`;
 class Account extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       accountInfo: [],
       stocksInfo: [],
@@ -47,7 +53,9 @@ class Account extends Component {
   }
 
   componentDidMount() {
+
     fetcher.getUserStocks().then((res) => {
+      this.setState({loading: true})
       // if(!res) {resolve()};
       let accountInfo = res;
       let codes = res.map((el) => {
@@ -69,7 +77,9 @@ class Account extends Component {
           isProfitNegative: negative,
         });
       });
+
     });
+
   }
 
   getPurchaseDayTotalSum = (accountInfo) => {
@@ -149,9 +159,11 @@ class Account extends Component {
             {this.calculateProfitPercentage(totalSpent, currentTotal)}
           </Profit>
         </Header>
+
+       {this.state.loading?
         <Body>
           <Paginator rowElems={rowelems} />
-        </Body>
+        </Body> : <Loading>Loading ...</Loading>}
       </AccountPage>
     );
   }
