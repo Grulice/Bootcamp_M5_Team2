@@ -35,15 +35,15 @@ export function getUserStocks() {
 }
 
 //Функция добавления данных в список акций
-export function addNewStock(obj, pcs) {
-  fetch("https://5e8da89e22d8cd0016a798db.mockapi.io/users/2/stocks", {
+export function addNewStock(obj) {
+   fetch("https://5e8da89e22d8cd0016a798db.mockapi.io/users/2/stocks", {
     method: "POST",
     body: JSON.stringify({
       code: obj.symbol,
       name: obj.name,
       purchasePrice: obj.price,
-      amount: pcs,
-      totalPrice: pcs * obj.price,
+      amount: obj.pieces,
+      totalPrice: obj.pieces * obj.price,
     }),
     headers: {
       "Content-Type": "application/json",

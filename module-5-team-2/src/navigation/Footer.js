@@ -44,12 +44,12 @@ class Footer extends React.Component {
     const currentBalance =() => {
       if(this.state.balance){
         return [
-          <CurrentBalance>
+          <CurrentBalance key={'balance'}>
             {Math.trunc(this.state.balance)}
             <span>.{this.numberAfterDot(this.state.balance)}$</span>
           </CurrentBalance>
         ];}
-      else return [<span>Loading....</span>]
+      else return [<span key={'error'}>Loading....</span>]
     };
 
     return (
