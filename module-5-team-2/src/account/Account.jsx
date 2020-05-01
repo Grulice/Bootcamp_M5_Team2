@@ -22,7 +22,7 @@ const TotalSum = styled.h1`
 
 const Profit = styled.p`
   text-align: center;
-  color: ${(props) => (props.isNegative ? "red" : "green")};
+  color: ${(props) => (props.sign < 0 ? "red" : "green")};
 `;
 
 const Body = styled.div`
@@ -39,7 +39,6 @@ const Loading = styled.h2`
   position: absolute;
   left: 46%;
   top: 240px;
-  
 `;
 class Account extends Component {
   constructor(props) {
@@ -51,14 +50,13 @@ class Account extends Component {
       totalSpent: 0,
       currentTotal: 0,
       profit: 0,
-      isProfitNegative: false,
+      sign: false,
+      loading: false,
     };
   }
 
   componentDidMount() {
-
     fetcher.getUserStocks().then((res) => {
-      this.setState({loading: true})
       // if(!res) {resolve()};
       let accountInfo = res;
       let codes = res.map((el) => {
@@ -69,7 +67,7 @@ class Account extends Component {
         let totalSpent = this.getPurchaseDayTotalSum(accountInfo);
         let currentTotal = this.getCurrentTotalSum(stocksInfo, accountInfo);
         let profit = currentTotal - totalSpent;
-        let negative = profit >= 0 ? false : true;
+        let sign = Math.sign(profit);
 
         this.setState({
           accountInfo: accountInfo,
@@ -77,12 +75,11 @@ class Account extends Component {
           totalSpent: totalSpent,
           currentTotal: currentTotal,
           profit: profit,
-          isProfitNegative: negative,
+          sign: sign,
+          loading: true,
         });
       });
-
     });
-
   }
 
   getPurchaseDayTotalSum = (accountInfo) => {
@@ -111,7 +108,7 @@ class Account extends Component {
   };
 
   splitDecimals = (number) => {
-    if (number == 0) return <>No profit</>;
+    if (number === 0) return <>No profit</>;
     const [wholePart, decPart] = number.toString().split(".");
     return (
       <>
@@ -123,11 +120,23 @@ class Account extends Component {
   calculateProfitPercentage = (buyPrice, currPrice) => {
     let profit = currPrice - buyPrice;
     let percent = (profit / buyPrice) * 100;
-    if (profit == 0) {
+    if (profit === 0) {
       return <>No profit</>;
     } else {
+      const sign = Math.sign(profit);
+      let signSymbol = "";
+      switch (sign) {
+        case -1:
+          signSymbol = "▼ ";
+          break;
+        case 1:
+          signSymbol = "▲ +";
+          break;
+        default:
+      }
       return (
         <>
+          {signSymbol}
           {this.splitDecimals(profit.toFixed(2))} ({percent.toFixed(2)}%)
         </>
       );
@@ -140,7 +149,7 @@ class Account extends Component {
 
   render() {
     const { accountInfo, stocksInfo, totalSpent, currentTotal } = this.state;
-    const rowelems = accountInfo.map((info) => {
+    const rowelems = accountInfo.map((info, index) => {
       const curStockPrice = this.findCurrentPrice(stocksInfo, info);
       const curprofit = this.calculateProfitPercentage(
         info.totalPrice,
@@ -149,24 +158,30 @@ class Account extends Component {
       return (
         <AccountRowElement
           {...info}
+          key={index}
           profit={curprofit}
-          isNegative={info.totalPrice - this.findCurrentPrice(stocksInfo, info)>0? true: false}
+          sign={Math.sign(curStockPrice - info.totalPrice)}
         />
       );
     });
+
     return (
       <AccountPage>
-        <Header>
-          <TotalSum>{this.splitDecimals(currentTotal)}</TotalSum>
-          <Profit isNegative={this.state.isProfitNegative}>
-            {this.calculateProfitPercentage(totalSpent, currentTotal)}
-          </Profit>
-        </Header>
-
-       {this.state.loading?
-        <Body>
-          <Paginator rowElems={rowelems} />
-        </Body> : <Loading>Loading ...</Loading>}
+        {this.state.loading ? (
+          <>
+            <Header>
+              <TotalSum>{this.splitDecimals(currentTotal)}</TotalSum>
+              <Profit sign={this.state.sign}>
+                {this.calculateProfitPercentage(totalSpent, currentTotal)}
+              </Profit>
+            </Header>
+            <Body>
+              <Paginator rowElems={rowelems} />
+            </Body>
+          </>
+        ) : (
+          <Loading>Loading ...</Loading>
+        )}
       </AccountPage>
     );
   }

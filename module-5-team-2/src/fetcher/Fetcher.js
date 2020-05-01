@@ -36,7 +36,7 @@ export function getUserStocks() {
 
 //Функция добавления данных в список акций
 export function addNewStock(obj) {
-   fetch("https://5e8da89e22d8cd0016a798db.mockapi.io/users/2/stocks", {
+  fetch("https://5e8da89e22d8cd0016a798db.mockapi.io/users/2/stocks", {
     method: "POST",
     body: JSON.stringify({
       code: obj.symbol,
@@ -51,11 +51,11 @@ export function addNewStock(obj) {
   });
 }
 
-export function getStockPricesFor(codes) {  
+export function getStockPricesFor(codes) {
+  if (codes.length === 0) return Promise.resolve([]);
   let codesString = codes.join(",");
-  return fetch(
-    `https://financialmodelingprep.com/api/v3/quote/${codesString}`
-  )
+
+  return fetch(`https://financialmodelingprep.com/api/v3/quote/${codesString}`)
     .then((res) => res.json())
     .then((res) =>
       res.map((item) => {
@@ -64,4 +64,3 @@ export function getStockPricesFor(codes) {
     );
 }
 
-// getStockPricesFor(["SPY", "MU", "NKE"]);

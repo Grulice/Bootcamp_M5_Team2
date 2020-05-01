@@ -45,8 +45,8 @@ const RowElemSumDiv = styled.div`
   text-align: right;
 `;
 const RowElemProfitDiv = styled.div`
-  width: 15%;
-  text-align: right;
+  width: 20%;
+  text-align: left;
   color: ${(props) => (props.isNegative ? "red" : "green")};
 `;
 
@@ -69,10 +69,19 @@ class RowElement extends Component {
     );
   };
 
- 
-
   render() {
-    const { code, name, amount, purchasePrice, profit, isNegative } = this.props;
+    const { code, name, amount, purchasePrice, profit, sign } = this.props;
+
+    let signSymbol = "";
+    switch (sign) {
+      case -1:
+        signSymbol = "▼ ";
+        break;
+      case 1:
+        signSymbol = "▲ +";
+        break;
+      default:
+    }
     return (
       <RowContainer>
         <Row>
@@ -83,14 +92,14 @@ class RowElement extends Component {
           <RowElemSumDiv>
             {this.splitDecimals((amount * purchasePrice).toFixed(3))}
           </RowElemSumDiv>
-          <RowElemProfitDiv isNegative={isNegative}>
-            {(isNegative ? "▼ " :  "▲ ") } {profit}
+          <RowElemProfitDiv isNegative={sign < 0 ? true : false}>
+            {/* {signSymbol} */}
+            {profit}
           </RowElemProfitDiv>
         </Row>
       </RowContainer>
     );
   }
 }
-
 
 export default RowElement;

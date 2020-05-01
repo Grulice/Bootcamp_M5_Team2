@@ -28,7 +28,7 @@ const Price = styled.div`
   font-size: 30px;
   color: #000000;
   width: 20%;
-  text-align: center;
+  text-align: right;
 `;
 
 const DecPartSpan = styled.span`

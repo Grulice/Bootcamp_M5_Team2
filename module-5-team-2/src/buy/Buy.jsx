@@ -2,15 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import arrow from "../img/arrow.svg";
-import { addNewStock, changeBalance,getUserBalance} from "../fetcher/Fetcher";
-
+import { addNewStock, changeBalance, getUserBalance } from "../fetcher/Fetcher";
 
 // Стили Компонента Buy начало ****
 const MainBuy = styled.div`
-display: flex;
-justify-content: center;
-align-items: center;
-flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   width: 100%;
   text-align: center;
 `;
@@ -31,20 +30,26 @@ const CentralBlock = styled.div`
     border: 3px solid #ffffff;
     color: #ffffff;
   }
-  span{
-  font-size: 15px;
+  span {
+    font-size: 15px;
   }
 `;
 const HeaderBuy = styled.div`
   display: flex;
   width: 100%;
-  padding-bottom: 56px;
-  padding-top: 30px;
-  box-shadow: 0 13px 5px -4px rgba(0, 0, 0, 0.15);
+  /* padding-bottom: 56px;
+  padding-top: 30px; */
+  padding: 30px 30px 56px 30px;
+  -webkit-box-shadow: 0px 6px 6px -6px gray;
+  -moz-box-shadow: 0px 6px 6px -6px gray;
+  box-shadow: 0px 6px 6px -6px gray;
   a {
     text-decoration: none;
     color: blueviolet;
     font-size: 18px;
+  }
+  a:hover {
+    text-decoration: underline;
   }
   h2 {
     text-align: center;
@@ -52,7 +57,6 @@ const HeaderBuy = styled.div`
     font-size: 28px;
     flex-basis: 92%;
     color: #2fc20a;
-
   }
   img {
     width: 12px;
@@ -89,51 +93,63 @@ const InputBlock = styled.div`
     border: none;
     outline: none;
   }
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
 `;
 const InputLenght = styled.input`
-    width: 100px;
-    font-size: 50px;
-    color: blueviolet;
-    text-align: center;
-    border: none;
-    outline: none;
+  width: 100px;
+  font-size: 50px;
+  color: blueviolet;
+  text-align: center;
+  border: none;
+  outline: none;
 `;
 // Стили Компонента Buy Конец ****
-
 
 class Buy extends React.Component {
   state = {
     name: null,
     price: null,
     symbol: null,
-    balance:null,
-    pieces: 0,
+    balance: null,
+    pieces: "",
   };
   componentDidMount() {
+    window.scrollTo(0, 0);
     const { name, price, symbol } = this.props.location.state; //Беру state из тега Link в компоненте Stock
     if (!this.state.name) {
       this.setState({ name: name, price: price, symbol: symbol }); // Записываю их в state текущего компонента
     }
-    getUserBalance().then(result => this.setState({balance:result.currentBalance})) // Записываю в state balance баланс с API
+    getUserBalance().then((result) =>
+      this.setState({ balance: result.currentBalance })
+    ); // Записываю в state balance баланс с API
   }
   // Функция выделяющая числа после точки для ее уменьшения в стилях в дальнейшем
-  numberAfterDot = (value) =>{
-        if(value) {
-            value.toFixed(2);
-            value = value+'';
-            const digits = value.substring(value.indexOf('.') + 1);
-            return '.'+ digits.substring(0,2);
-        }
-        else return null;
+  numberAfterDot = (value) => {
+    if (value) {
+      value.toFixed(2);
+      value = value + "";
+      const digits = value.substring(value.indexOf(".") + 1);
+      return "." + digits.substring(0, 2);
+    } else return null;
   };
   // Функция увеличения значения в input
   handlerPlus = () => {
-    this.setState({ pieces: +(this.state.pieces) + 1 });
+    this.setState({ pieces: +this.state.pieces + 1 });
   };
-    // Функция уменьшения значения в input
+  // Функция уменьшения значения в input
   handlerMinus = () => {
-      if(this.state.pieces===0) this.setState({ pieces: 0 });
-      else this.setState({ pieces: +(this.state.pieces) - 1 });
+    if (this.state.pieces === 0) this.setState({ pieces: 0 });
+    else this.setState({ pieces: +this.state.pieces - 1 });
   };
   //Функция отправки полученных данных на API команды начало ****
   sendToUserStock = () => {
@@ -143,26 +159,30 @@ class Buy extends React.Component {
       symbol: `${this.state.symbol}`,
       pieces: `${this.state.pieces}`,
     };
-      const elements = this.state.pieces*this.state.price;
-      if(elements>this.state.balance) alert('Недостаточно средств');
+    const elements = this.state.pieces * this.state.price;
+    if (elements <= 0 || this.state.pieces === "")
+      return alert("Должно быть больше нуля");
+    else {
+      if (elements > this.state.balance) alert("Недостаточно средств");
       else {
-          const currentBalance = this.state.balance - elements;
-          changeBalance(currentBalance);
+        const currentBalance = this.state.balance - elements;
+        changeBalance(currentBalance);
+        return addNewStock(objectOfData);
       }
-    return addNewStock(objectOfData);
+    }
   };
- //Функция отправки полученных данных на API команды конец ****
 
- // Функция записывающая текущее значение value input  в state pieces
+  //Функция отправки полученных данных на API команды конец ****
+
+  // Функция записывающая текущее значение value input  в state pieces
   changeValue = (e) => {
     this.setState({ pieces: e.target.value });
-      if(e.target.value.length===0) e.target.style.width=`100px`;
-      else {
-          e.target.style.width = ((e.target.value.length + 20) * 8) + 'px'; // Динамическое расширение и уменьшения поля input в зависимости от введенного значения
-      }
-      parseInt(e.target.value);
+    if (e.target.value.length === 0) e.target.style.width = `100px`;
+    else {
+      e.target.style.width = (e.target.value.length + 20) * 8 + "px"; // Динамическое расширение и уменьшения поля input в зависимости от введенного значения
+    }
+    parseInt(e.target.value);
   };
-
 
   render() {
     return (
@@ -175,21 +195,42 @@ class Buy extends React.Component {
           <h2>Buy {this.state.name}</h2>
         </HeaderBuy>
         <CentralBlock>
-          <PriceText>{Math.trunc(this.state.price)}<span>{this.numberAfterDot(this.state.price)} $</span></PriceText>
-          <InputBlock >
+          <PriceText>
+            {Math.trunc(this.state.price)}
+            <span>{this.numberAfterDot(this.state.price)} $</span>
+          </PriceText>
+          <InputBlock>
             <button onClick={this.handlerMinus}>-</button>
             <InputLenght
-              type="text"
+              type="number"
+              min="0"
               onChange={this.changeValue}
               value={this.state.pieces}
+              placeholder="0"
             />
             <button onClick={this.handlerPlus}>+</button>
           </InputBlock>
           <BuyFor>
             Buy for {Math.trunc(this.state.pieces * this.state.price)}
-            <span>{this.numberAfterDot(this.state.pieces * this.state.price)} $</span>
+            <span>
+              {this.numberAfterDot(this.state.pieces * this.state.price)} $
+            </span>
           </BuyFor>
-          <Link to={"/Stock"}>
+          <Link
+            to={{
+              pathname:
+                this.state.pieces <= 0 ||
+                this.state.pieces === "" ||
+                this.state.pieces * this.state.price > this.state.balance
+                  ? "/Buy"
+                  : "/Stock",
+              state: {
+                symbol: this.state.symbol,
+                name: this.state.name,
+                price: this.state.price,
+              },
+            }}
+          >
             <p onClick={this.sendToUserStock}>Buy</p>
           </Link>
         </CentralBlock>
