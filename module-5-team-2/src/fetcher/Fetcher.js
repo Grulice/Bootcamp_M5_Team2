@@ -57,5 +57,12 @@ export function getStockPricesFor(codes) {
       codes.join(",")
   )
     .then((res) => res.json())
-    .then((res) => console.log(res));
+    .then((res) =>
+      res.companyProfiles.map((item) => {
+        console.log({ symbol: item.symbol, price: item.profile.price });
+        return { symbol: item.symbol, price: item.profile.price };
+      })
+    );
 }
+
+getStockPricesFor(["SPY", "MU", "NKE"]);

@@ -8,12 +8,8 @@ const Row = styled.div`
 
   height: 70px;
   padding: 15px 10px;
-  border-bottom: 0.5px dashed lightgrey;
   &:hover {
     background-color: rgba(131, 58, 224, 0.05);
-  }
-  &:last-child {
-    border-bottom: none;
   }
 `;
 
@@ -25,7 +21,14 @@ class RowElement extends Component {
 
   render() {
     const divsToRender = this.props.divs;
-    return <Row>{divsToRender}</Row>;
+    return (
+    
+    <Row>
+      {divsToRender}
+
+    </Row>
+    
+    );
   }
 }
 

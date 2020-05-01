@@ -30,6 +30,7 @@ const HeaderBlock = styled.div`
   a:hover {
     color: #833ae0;
     border-bottom: 1px solid #833ae0;
+    margin-bottom: -1px;
   }
 `;
 class Header extends React.Component {

@@ -7,9 +7,7 @@ const Button = styled.button`
   height: 20px;
   width: 20px;
   margin: 0 3px;
-
   background-color: white;
-
   color: ${(props) => (props.selected ? "blueviolet" : "black")};
   font-weight: ${(props) => (props.selected ? "bold" : "normal")};
 `;
