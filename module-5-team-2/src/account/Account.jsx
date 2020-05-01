@@ -50,7 +50,7 @@ class Account extends Component {
       totalSpent: 0,
       currentTotal: 0,
       profit: 0,
-      sign: false,
+      sign: 0,
       loading: false,
     };
   }
@@ -144,7 +144,16 @@ class Account extends Component {
   };
 
   findCurrentPrice(stocksInfo, info) {
-    return stocksInfo.find((el) => el.symbol === info.code).price * info.amount;
+    try {
+      return (
+        stocksInfo.find((el) => el.symbol === info.code).price * info.amount
+      );
+    } catch (error) {
+      alert(
+        `Сервер не вернул информации для ${info.code} (${info.name}). \nДля этой акции прибыль расчитана не будет.`
+      );
+      return info.totalPrice;
+    }
   }
 
   render() {

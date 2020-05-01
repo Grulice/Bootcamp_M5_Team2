@@ -51,16 +51,56 @@ export function addNewStock(obj) {
   });
 }
 
+const chunkArray = (myArray, chunk_size) => {
+  var index = 0;
+  var arrayLength = myArray.length;
+  var tempArray = [];
+
+  for (index = 0; index < arrayLength; index += chunk_size) {
+    const myChunk = myArray.slice(index, index + chunk_size);
+    // Do something if you want with the group
+    tempArray.push(myChunk);
+  }
+
+  return tempArray;
+};
+
 export function getStockPricesFor(codes) {
   if (codes.length === 0) return Promise.resolve([]);
-  let codesString = codes.join(",");
-
-  return fetch(`https://financialmodelingprep.com/api/v3/quote/${codesString}`)
-    .then((res) => res.json())
-    .then((res) =>
-      res.map((item) => {
-        return { symbol: item.symbol, price: item.price };
-      })
+  const chunkedCodes = chunkArray(codes, 10);
+  const fetches = [];
+  for (const chunk of chunkedCodes) {
+    let codesString = chunk.join(",");
+    fetches.push(
+      fetch(`https://financialmodelingprep.com/api/v3/quote/${codesString}`)
     );
-}
+  }
 
+  return Promise.all(fetches)
+    .then((fetchResults) => {
+      const results = [];
+      fetchResults.forEach((res) => {
+        results.push(res.json());
+      });
+      return Promise.all(results);
+    })
+    .then((res) => {
+      return res.reduce((arr, row) => {
+        return arr.concat(row);
+      }, []);
+    })
+    .then((res) => {
+      const final = res.map((item) => {
+        return { symbol: item.symbol, price: item.price };
+      });
+      return final;
+    });
+
+  // return fetch(`https://financialmodelingprep.com/api/v3/quote/${codesString}`)
+  //   .then((res) => res.json())
+  //   .then((res) =>
+  //     res.map((item) => {
+  //       return { symbol: item.symbol, price: item.price };
+  //     })
+  //   );
+}
