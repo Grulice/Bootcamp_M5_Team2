@@ -59,10 +59,10 @@ export function getStockPricesFor(codes) {
     .then((res) => res.json())
     .then((res) =>
       res.companyProfiles.map((item) => {
-        console.log({ symbol: item.symbol, price: item.profile.price });
+        // console.log({ symbol: item.symbol, price: item.profile.price });
         return { symbol: item.symbol, price: item.profile.price };
       })
     );
 }
 
-getStockPricesFor(["SPY", "MU", "NKE"]);
+// getStockPricesFor(["SPY", "MU", "NKE"]);
