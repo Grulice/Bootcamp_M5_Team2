@@ -10,9 +10,9 @@ import styled from "styled-components";
 const Container = styled.main`
   width: 100%;
   min-height: calc(100vh - 90px - 90px);
-  -webkit-box-shadow: inset 0px 11px 6px -4px rgba(189, 189, 189, 0.87);
-  -moz-box-shadow: inset 0px 11px 6px -4px rgba(189, 189, 189, 0.87);
-  box-shadow: inset 0px 11px 6px -4px rgba(189, 189, 189, 0.87);
+  -webkit-box-shadow: inset 0px 11px 6px 0px rgba(189, 189, 189, 0.87);
+  -moz-box-shadow: inset 0px 11px 6px 0px rgba(189, 189, 189, 0.87);
+  box-shadow: inset 0px 11px 6px 0px rgba(189, 189, 189, 0.87);
   margin-top: 20px;
   margin-bottom: 90px;
   display: flex;
@@ -24,6 +24,12 @@ const Container = styled.main`
   a {
     text-decoration: none;
     font-family: "Roboto", sans-serif;
+    & > div > div {
+      border-bottom: 0.5px dashed lightgrey;
+    }
+    &:last-child > div > div {
+      border-bottom: none;
+    }
   }
 `;
 
