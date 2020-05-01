@@ -29,9 +29,18 @@ class PaginatorPageBar extends Component {
     this.props.onChange(btnNum);
   };
 
+  getPageNumButtons = () => {
+    let btns = [];
+    const dots = <>...</>;
+    const { pageAmount, curSelectedPage } = this.props;
+
+    if (pageAmount > 6) {
+    }
+  };
+
   render() {
     let btns = [];
-    for (let i = 0; i < this.props.pageAmount; i++) {
+    for (let i = 1; i <= this.props.pageAmount; i++) {
       btns.push(
         <PaginatorButton
           key={i} // for React's internal engine

@@ -25,7 +25,7 @@ class PaginatorButton extends Component {
         onClick={() => this.props.handleBtnClick(this.props.buttonNum)}
         selected={this.props.isSelected}
       >
-        {this.props.buttonNum + 1}
+        {this.props.buttonNum}
       </Button>
     );
   }

@@ -6,24 +6,26 @@ const PAGE_SIZE = 20;
 
 const PaginatorMain = styled.div``;
 
-const Page = styled.div``;
+const Page = styled.div`
+  margin-bottom: 20px;
+`;
 
 class Paginator extends Component {
   constructor(props) {
     super(props);
-    this.state = { curPage: 0, pageAmount: 0 };
+    this.state = { curPage: 1, pageAmount: 0 };
   }
 
   incrementIndex = (e) => {
     const newPage =
-      this.state.curPage + 1 === Math.ceil(this.props.rowElems.length / PAGE_SIZE)
-        ? Math.ceil(this.props.rowElems.length / PAGE_SIZE) - 1
+      this.state.curPage + 1 > Math.ceil(this.props.rowElems.length / PAGE_SIZE)
+        ? Math.ceil(this.props.rowElems.length / PAGE_SIZE)
         : this.state.curPage + 1;
     this.setState({ curPage: newPage });
   };
 
   decrementIndex = (e) => {
-    const newPage = this.state.curPage - 1 < 0 ? 0 : this.state.curPage - 1;
+    const newPage = this.state.curPage - 1 < 1 ? 1 : this.state.curPage - 1;
     this.setState({ curPage: newPage });
   };
 
@@ -36,8 +38,8 @@ class Paginator extends Component {
       <PaginatorMain>
         <Page>
           {this.props.rowElems.slice(
-            this.state.curPage * PAGE_SIZE,
-            this.state.curPage * PAGE_SIZE + PAGE_SIZE
+            (this.state.curPage - 1) * PAGE_SIZE,
+            (this.state.curPage - 1) * PAGE_SIZE + PAGE_SIZE
           )}
         </Page>
         <PaginatorPageBar
