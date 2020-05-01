@@ -32,12 +32,18 @@ const Body = styled.div`
 const DecPartSpan = styled.span`
   font-size: 0.7em;
 `;
-
+const Loading = styled.h2`
+  position: absolute;
+  left: 46%;
+  top: 240px;
+  
+`;
 class Account extends Component {
   constructor(props) {
     super(props);
     this.state = {};
     this.accountInfo = [];
+
   }
 
   generateRandomUserStocks = () => {
@@ -65,10 +71,12 @@ class Account extends Component {
   };
 
   componentDidMount() {
-    fetcher.getUserStocks().then((res) => {
+   fetcher.getUserStocks().then((res) => {
       this.accountInfo = res;
       this.forceUpdate();
+    this.setState({loading: true})
     });
+
   }
 
   getTotalSum = () =>
@@ -100,9 +108,9 @@ class Account extends Component {
         </Header>
         {/* <button onClick={this.generateRandomUserStocks}>Gen Stocks</button>
         <button onClick={this.deleteAllStocks}>Delete Stocks</button> */}
-        <Body>
+       {this.state.loading?  <Body>
           <Paginator rowElems={rowelems} />
-        </Body>
+        </Body> : <Loading>Loading ...</Loading>}
       </AccountPage>
     );
   }
