@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 
-const Row = styled.div`
+const RowContainer = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
 
   height: 70px;
@@ -17,11 +16,43 @@ const Row = styled.div`
   }
 `;
 
-const RowElemTickerDiv = styled.div``;
-const RowElemNameDiv = styled.div``;
-const RowElemAmountDiv = styled.div``;
-const RowElemSumDiv = styled.div``;
-const RowElemProfitDiv = styled.div``;
+const Row = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: baseline;
+  width: 100%;
+`;
+
+const RowElemTickerDiv = styled.div`
+  font-family: monospace;
+  width: 3%;
+  color: grey;
+  font-size: x-small;
+  vertical-align: baseline;
+`;
+const RowElemNameDiv = styled.div`
+  width: 20%;
+`;
+const RowElemAmountDiv = styled.div`
+  font-family: monospace;
+  width: 7%;
+  color: grey;
+  font-size: x-small;
+  vertical-align: baseline;
+`;
+const RowElemSumDiv = styled.div`
+  width: 15%;
+  text-align: right;
+`;
+const RowElemProfitDiv = styled.div`
+  width: 15%;
+  text-align: right;
+  color: ${(props) => (props.isNegative ? "red" : "green")};
+`;
+
+const DecPartSpan = styled.span`
+  font-size: 0.7em;
+`;
 
 class RowElement extends Component {
   constructor(props) {
@@ -29,19 +60,32 @@ class RowElement extends Component {
     this.state = {};
   }
 
-  render() {
-    const { code, companyName, amount, purchasePrice, profit } = this.props;
+  splitDecimals = (number) => {
+    const [wholePart, decPart] = number.toString().split(".");
     return (
-      <Row>
-        {" "}
-        <RowElemTickerDiv>{code}</RowElemTickerDiv>
-        <RowElemNameDiv>{companyName}</RowElemNameDiv>
-        <RowElemAmountDiv>{amount} pcs</RowElemAmountDiv>
-        <RowElemSumDiv>{amount * purchasePrice}</RowElemSumDiv>
-        <RowElemProfitDiv>
-          {(profit > 0 ? "^ " : "v ") + profit}
-        </RowElemProfitDiv>
-      </Row>
+      <>
+        {wholePart}.<DecPartSpan>{decPart} $</DecPartSpan>
+      </>
+    );
+  };
+
+  render() {
+    const { code, name, amount, purchasePrice, profit } = this.props;
+    return (
+      <RowContainer>
+        <Row>
+          {" "}
+          <RowElemTickerDiv>{code}</RowElemTickerDiv>
+          <RowElemNameDiv>{name}</RowElemNameDiv>
+          <RowElemAmountDiv>{amount} pcs</RowElemAmountDiv>
+          <RowElemSumDiv>
+            {this.splitDecimals((amount * purchasePrice).toFixed(3))}
+          </RowElemSumDiv>
+          <RowElemProfitDiv isNegative={profit < 0}>
+            {(profit < 0 ? "▼ " : "▲ ") + profit}
+          </RowElemProfitDiv>
+        </Row>
+      </RowContainer>
     );
   }
 }

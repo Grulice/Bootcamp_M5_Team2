@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import Search from "./Search";
 import Rows from "./Rows";
 import RowDivs from "./RowDivs";
+import Paginator from "../commonUI/Paginator";
 import { Link } from "react-router-dom";
-import Paginator from "./Paginator";
 import * as fetcher from "../fetcher/Fetcher";
 import styled from "styled-components";
 
@@ -57,7 +57,6 @@ class Stocks extends Component {
     const searchResult = this.state.allStocks.filter((stock) => {
       return stock.symbol.includes(upperValue);
     });
-
     this.setState({
       value: value,
       filteredStocks: searchResult,
@@ -94,8 +93,9 @@ class Stocks extends Component {
     return (
       <Container>
         <Search value={value} handleChange={this.handleSearch} />
+
         {rows.length !== 0 ? (
-          <Paginator rowElems={rows} rowsNum={rows.length} />
+          <Paginator rowElems={rows}/>
         ) : value === "" ? (
           <h2> Loading ... </h2>
         ) : (
