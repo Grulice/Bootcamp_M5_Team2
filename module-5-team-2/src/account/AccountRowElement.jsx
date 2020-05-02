@@ -71,12 +71,15 @@ class RowElement extends Component {
 
   render() {
     const { code, name, amount, purchasePrice, profit, sign } = this.props;
+    console.log();
     return (
       <RowContainer>
         <Row>
           {" "}
           <RowElemTickerDiv>{code}</RowElemTickerDiv>
-          <RowElemNameDiv>{name}</RowElemNameDiv>
+          <RowElemNameDiv>
+            {name === "undefined" || !name ? <i>{code}</i> : name}
+          </RowElemNameDiv>
           <RowElemAmountDiv>{amount} pcs</RowElemAmountDiv>
           <RowElemSumDiv>
             {this.splitDecimals((amount * purchasePrice).toFixed(3))}
