@@ -33,7 +33,7 @@ const Container = styled.main`
     }
   }
 `;
-const TestBlock = styled.div`
+const StocksContainer = styled.div`
   width: 100%;
 `;
 class Stocks extends Component {
@@ -97,7 +97,7 @@ class Stocks extends Component {
     });
 
     return (
-        <TestBlock>
+        <StocksContainer>
             <Container>
                 <Search value={value} handleChange={this.handleSearch} />
 
@@ -110,7 +110,7 @@ class Stocks extends Component {
                 )}
             </Container>
             <Footer />
-        </TestBlock>
+        </StocksContainer>
 
     );
   }

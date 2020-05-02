@@ -13,7 +13,7 @@ const AccountPage = styled.div`
   flex-direction: column;
   width: 100%;
 `;
-const TestBlock = styled.div`
+const AccountContainer = styled.div`
   width: 100%;
 `;
 const Header = styled.div`
@@ -192,14 +192,14 @@ class Account extends Component {
     });
 
     return (
-        <TestBlock>
+        <AccountContainer>
           <AccountPage>
             {this.state.loading ? (
               <>
                 <Header>
                   <TotalSum>{this.splitDecimals(currentTotal)}</TotalSum>
                   <Profit sign={this.state.sign}>
-                    {this.calculateProfitPercentage(totalSpent, currentTotal)}
+                    {this.getProfitAndPercentageComponent(totalSpent, currentTotal)}
                   </Profit>
                 </Header>
                 <Body>
@@ -211,7 +211,7 @@ class Account extends Component {
             )}
           </AccountPage>
           <Footer/>
-        </TestBlock>
+        </AccountContainer>
     );
   }
 }
