@@ -81,7 +81,6 @@ export function getStockPricesFor(codes) {
       )
     );
   }
-
   return Promise.all(fetches)
     .then((fetchResults) => {
       const results = [];
