@@ -6,7 +6,8 @@ import Paginator from "../commonUI/Paginator";
 import { Link } from "react-router-dom";
 import * as fetcher from "../fetcher/Fetcher";
 import styled from "styled-components";
-
+import Footer from "../navigation/Footer";
+import {Loader} from "../commonUI/Spinner";
 const Container = styled.main`
   width: 100%;
   min-height: calc(100vh - 90px - 90px);
@@ -31,6 +32,9 @@ const Container = styled.main`
       border-bottom: none;
     }
   }
+`;
+const TestBlock = styled.div`
+  width: 100%;
 `;
 class Stocks extends Component {
   constructor(props) {
@@ -93,17 +97,21 @@ class Stocks extends Component {
     });
 
     return (
-      <Container>
-        <Search value={value} handleChange={this.handleSearch} />
+        <TestBlock>
+            <Container>
+                <Search value={value} handleChange={this.handleSearch} />
 
-        {rows.length !== 0 ? (
-          <Paginator rowElems={rows} />
-        ) : value === "" ? (
-          <h2> Loading ... </h2>
-        ) : (
-          <h2>Not Found</h2>
-        )}
-      </Container>
+                {rows.length !== 0 ? (
+                    <Paginator rowElems={rows} />
+                ) : value === "" ? (
+                    <Loader> </Loader>
+                ) : (
+                    <h2>Not Found</h2>
+                )}
+            </Container>
+            <Footer />
+        </TestBlock>
+
     );
   }
 }

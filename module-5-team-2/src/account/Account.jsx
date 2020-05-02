@@ -4,11 +4,18 @@ import styled from "styled-components";
 import AccountRowElement from "./AccountRowElement";
 import Paginator from "../commonUI/Paginator";
 import * as fetcher from "../fetcher/Fetcher";
+import Footer from "../navigation/Footer";
+import {Loader} from "../commonUI/Spinner";
 
 const AccountPage = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   width: 100%;
 `;
-
+const TestBlock = styled.div`
+  width: 100%;
+`;
 const Header = styled.div`
   display: flex;
   flex-direction: column;
@@ -26,6 +33,7 @@ const Profit = styled.p`
 `;
 
 const Body = styled.div`
+  width: 100%;
   padding: 20px 20%;
   -webkit-box-shadow: inset 0px 6px 6px -6px gray;
   -moz-box-shadow: inset 0px 6px 6px -6px gray;
@@ -184,23 +192,26 @@ class Account extends Component {
     });
 
     return (
-      <AccountPage>
-        {this.state.loading ? (
-          <>
-            <Header>
-              <TotalSum>{this.splitDecimals(currentTotal)}</TotalSum>
-              <Profit sign={this.state.sign}>
-                {this.getProfitAndPercentageComponent(totalSpent, currentTotal)}
-              </Profit>
-            </Header>
-            <Body>
-              <Paginator rowElems={rowElems} />
-            </Body>
-          </>
-        ) : (
-          <Loading>Loading ...</Loading>
-        )}
-      </AccountPage>
+        <TestBlock>
+          <AccountPage>
+            {this.state.loading ? (
+              <>
+                <Header>
+                  <TotalSum>{this.splitDecimals(currentTotal)}</TotalSum>
+                  <Profit sign={this.state.sign}>
+                    {this.calculateProfitPercentage(totalSpent, currentTotal)}
+                  </Profit>
+                </Header>
+                <Body>
+                  <Paginator rowElems={rowElems} />
+                </Body>
+              </>
+            ) : (
+              <Loader> </Loader>
+            )}
+          </AccountPage>
+          <Footer/>
+        </TestBlock>
     );
   }
 }
