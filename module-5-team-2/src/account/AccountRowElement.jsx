@@ -71,17 +71,6 @@ class RowElement extends Component {
 
   render() {
     const { code, name, amount, purchasePrice, profit, sign } = this.props;
-
-    let signSymbol = "";
-    switch (sign) {
-      case -1:
-        signSymbol = "▼ ";
-        break;
-      case 1:
-        signSymbol = "▲ +";
-        break;
-      default:
-    }
     return (
       <RowContainer>
         <Row>
@@ -93,7 +82,6 @@ class RowElement extends Component {
             {this.splitDecimals((amount * purchasePrice).toFixed(3))}
           </RowElemSumDiv>
           <RowElemProfitDiv isNegative={sign < 0 ? true : false}>
-            {/* {signSymbol} */}
             {profit}
           </RowElemProfitDiv>
         </Row>

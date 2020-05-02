@@ -67,12 +67,18 @@ const chunkArray = (myArray, chunk_size) => {
 
 export function getStockPricesFor(codes) {
   if (codes.length === 0) return Promise.resolve([]);
-  const chunkedCodes = chunkArray(codes, 10);
+
+  // only get unique codes
+  const uniqueCodes = Array.from(new Set(codes));
+
+  const chunkedCodes = chunkArray(uniqueCodes, 3);
   const fetches = [];
   for (const chunk of chunkedCodes) {
     let codesString = chunk.join(",");
     fetches.push(
-      fetch(`https://financialmodelingprep.com/api/v3/quote/${codesString}`)
+      fetch(
+        `https://financialmodelingprep.com/api/v3/company/profile/${codesString}`
+      )
     );
   }
 
@@ -86,21 +92,14 @@ export function getStockPricesFor(codes) {
     })
     .then((res) => {
       return res.reduce((arr, row) => {
-        return arr.concat(row);
+        if (!row.hasOwnProperty("companyProfiles")) return arr.concat(row);
+        return arr.concat(row.companyProfiles);
       }, []);
     })
     .then((res) => {
       const final = res.map((item) => {
-        return { symbol: item.symbol, price: item.price };
+        return { symbol: item.symbol, price: item.profile.price };
       });
       return final;
     });
-
-  // return fetch(`https://financialmodelingprep.com/api/v3/quote/${codesString}`)
-  //   .then((res) => res.json())
-  //   .then((res) =>
-  //     res.map((item) => {
-  //       return { symbol: item.symbol, price: item.price };
-  //     })
-  //   );
 }

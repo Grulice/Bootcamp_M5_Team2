@@ -49,7 +49,6 @@ class Account extends Component {
       stocksInfo: [],
       totalSpent: 0,
       currentTotal: 0,
-      profit: 0,
       sign: 0,
       loading: false,
     };
@@ -57,7 +56,6 @@ class Account extends Component {
 
   componentDidMount() {
     fetcher.getUserStocks().then((res) => {
-      // if(!res) {resolve()};
       let accountInfo = res;
       let codes = res.map((el) => {
         return el.code;
@@ -65,7 +63,10 @@ class Account extends Component {
       fetcher.getStockPricesFor(codes).then((stocks) => {
         let stocksInfo = stocks;
         let totalSpent = this.getPurchaseDayTotalSum(accountInfo);
-        let currentTotal = this.getCurrentTotalSum(stocksInfo, accountInfo);
+        let currentTotal = this.getCurrentTotalStockPrice(
+          stocksInfo,
+          accountInfo
+        );
         let profit = currentTotal - totalSpent;
         let sign = Math.sign(profit);
 
@@ -74,7 +75,6 @@ class Account extends Component {
           stocksInfo: stocksInfo,
           totalSpent: totalSpent,
           currentTotal: currentTotal,
-          profit: profit,
           sign: sign,
           loading: true,
         });
@@ -90,21 +90,24 @@ class Account extends Component {
       .toFixed(3);
   };
 
-  getCurrentTotalSum = (stocksInfo, accountInfo) => {
-    return stocksInfo
-      .map((stock) => {
-        const necStock = accountInfo.filter((el) => {
-          return el.code === stock.symbol;
-        });
-        let amount = necStock.reduce((acc, currentStock) => {
-          return acc + Number(currentStock.amount);
-        }, 0);
-        return stock.price * amount;
-      })
-      .reduce((prev, currStock) => {
-        return prev + currStock;
-      }, 0)
-      .toFixed(3);
+  getCurrentTotalStockPrice = (stocksInfo, accountInfo) => {
+    // Calculates the total price for user's stocks if the user sells them all
+    // at their current prices.
+    const uniqueStocksSums = stocksInfo.map((stock) => {
+      const necStock = accountInfo.filter((el) => {
+        return el.code === stock.symbol;
+      });
+      let amount = necStock.reduce((acc, currentStock) => {
+        return acc + Number(currentStock.amount);
+      }, 0);
+      return stock.price * amount;
+    });
+
+    const allStocksSum = uniqueStocksSums.reduce((prev, currStock) => {
+      return prev + currStock;
+    }, 0);
+
+    return allStocksSum.toFixed(3);
   };
 
   splitDecimals = (number) => {
@@ -117,23 +120,13 @@ class Account extends Component {
     );
   };
 
-  calculateProfitPercentage = (buyPrice, currPrice) => {
+  getProfitAndPercentageComponent = (buyPrice, currPrice) => {
     let profit = currPrice - buyPrice;
     let percent = (profit / buyPrice) * 100;
     if (profit === 0) {
       return <>No profit</>;
     } else {
-      const sign = Math.sign(profit);
-      let signSymbol = "";
-      switch (sign) {
-        case -1:
-          signSymbol = "▼ ";
-          break;
-        case 1:
-          signSymbol = "▲ +";
-          break;
-        default:
-      }
+      let signSymbol = this.getSignSymbol(profit);
       return (
         <>
           {signSymbol}
@@ -143,24 +136,40 @@ class Account extends Component {
     }
   };
 
+  getSignSymbol(profit) {
+    let signSymbol = "";
+    const sign = Math.sign(profit);
+    switch (sign) {
+      case -1:
+        // don't return '-' because the number will already have a minus sign
+        signSymbol = "▼ ";
+        break;
+      case 1:
+        signSymbol = "▲ +";
+        break;
+      default:
+    }
+    return signSymbol;
+  }
+
   findCurrentPrice(stocksInfo, info) {
     try {
       return (
         stocksInfo.find((el) => el.symbol === info.code).price * info.amount
       );
     } catch (error) {
-      alert(
-        `Сервер не вернул информации для ${info.code} (${info.name}). \nДля этой акции прибыль расчитана не будет.`
-      );
-      return info.totalPrice;
+      // if the company does not exist in Financial API DB - we lose all our investment :)
+      console.error(`Company info was not provided by the API: ${error}`);
+      return 0;
     }
   }
 
   render() {
     const { accountInfo, stocksInfo, totalSpent, currentTotal } = this.state;
-    const rowelems = accountInfo.map((info, index) => {
+    const rowElems = accountInfo.map((info, index) => {
+      // index is needed for AccountRowElement key
       const curStockPrice = this.findCurrentPrice(stocksInfo, info);
-      const curprofit = this.calculateProfitPercentage(
+      const curprofit = this.getProfitAndPercentageComponent(
         info.totalPrice,
         curStockPrice
       );
@@ -181,11 +190,11 @@ class Account extends Component {
             <Header>
               <TotalSum>{this.splitDecimals(currentTotal)}</TotalSum>
               <Profit sign={this.state.sign}>
-                {this.calculateProfitPercentage(totalSpent, currentTotal)}
+                {this.getProfitAndPercentageComponent(totalSpent, currentTotal)}
               </Profit>
             </Header>
             <Body>
-              <Paginator rowElems={rowelems} />
+              <Paginator rowElems={rowElems} />
             </Body>
           </>
         ) : (
