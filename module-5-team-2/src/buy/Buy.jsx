@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import arrow from "../img/arrow.svg";
 import { addNewStock, changeBalance, getUserBalance } from "../fetcher/Fetcher";
+import Footer from "../navigation/Footer";
 
 // Стили Компонента Buy начало ****
 const MainBuy = styled.div`
@@ -33,6 +34,9 @@ const CentralBlock = styled.div`
   span {
     font-size: 15px;
   }
+`;
+const TestBlock = styled.div`
+  width: 100%;
 `;
 const HeaderBuy = styled.div`
   display: flex;
@@ -129,9 +133,9 @@ class Buy extends React.Component {
     if (!this.state.name) {
       this.setState({ name: name, price: price, symbol: symbol }); // Записываю их в state текущего компонента
     }
-    getUserBalance().then((result) =>
-      this.setState({ balance: result.currentBalance })
-    ); // Записываю в state balance баланс с API
+    getUserBalance().then((result) =>{
+          this.setState({ balance: result.currentBalance })
+    }); // Записываю в state balance баланс с API
   }
   // Функция выделяющая числа после точки для ее уменьшения в стилях в дальнейшем
   numberAfterDot = (value) => {
@@ -167,7 +171,7 @@ class Buy extends React.Component {
       else {
         const currentBalance = this.state.balance - elements;
         changeBalance(currentBalance);
-        return addNewStock(objectOfData);
+        addNewStock(objectOfData);
       }
     }
   };
@@ -186,55 +190,58 @@ class Buy extends React.Component {
 
   render() {
     return (
-      <MainBuy>
-        <HeaderBuy>
-          <Link to={"/Stock"}>
-            <img src={arrow} alt="arrow" />
-            Back
-          </Link>
-          <h2>Buy {this.state.name}</h2>
-        </HeaderBuy>
-        <CentralBlock>
-          <PriceText>
-            {Math.trunc(this.state.price)}
-            <span>{this.numberAfterDot(this.state.price)} $</span>
-          </PriceText>
-          <InputBlock>
-            <button onClick={this.handlerMinus}>-</button>
-            <InputLenght
-              type="number"
-              min="0"
-              onChange={this.changeValue}
-              value={this.state.pieces}
-              placeholder="0"
-            />
-            <button onClick={this.handlerPlus}>+</button>
-          </InputBlock>
-          <BuyFor>
-            Buy for {Math.trunc(this.state.pieces * this.state.price)}
-            <span>
-              {this.numberAfterDot(this.state.pieces * this.state.price)} $
-            </span>
-          </BuyFor>
-          <Link
-            to={{
-              pathname:
-                this.state.pieces <= 0 ||
-                this.state.pieces === "" ||
-                this.state.pieces * this.state.price > this.state.balance
-                  ? "/Buy"
-                  : "/Stock",
-              state: {
-                symbol: this.state.symbol,
-                name: this.state.name,
-                price: this.state.price,
-              },
-            }}
-          >
-            <p onClick={this.sendToUserStock}>Buy</p>
-          </Link>
-        </CentralBlock>
-      </MainBuy>
+        <TestBlock>
+            <MainBuy>
+              <HeaderBuy>
+                <Link to={"/Stock"}>
+                  <img src={arrow} alt="arrow" />
+                  Back
+                </Link>
+                <h2>Buy {this.state.name}</h2>
+              </HeaderBuy>
+              <CentralBlock>
+                <PriceText>
+                  {Math.trunc(this.state.price)}
+                  <span>{this.numberAfterDot(this.state.price)} $</span>
+                </PriceText>
+                <InputBlock>
+                  <button onClick={this.handlerMinus}>-</button>
+                  <InputLenght
+                    type="number"
+                    min="0"
+                    onChange={this.changeValue}
+                    value={this.state.pieces}
+                    placeholder="0"
+                  />
+                  <button onClick={this.handlerPlus}>+</button>
+                </InputBlock>
+                <BuyFor>
+                  Buy for {Math.trunc(this.state.pieces * this.state.price)}
+                  <span>
+                    {this.numberAfterDot(this.state.pieces * this.state.price)} $
+                  </span>
+                </BuyFor>
+                <Link
+                  to={{
+                    pathname:
+                      this.state.pieces <= 0 ||
+                      this.state.pieces === "" ||
+                      this.state.pieces * this.state.price > this.state.balance
+                        ? "/Buy"
+                        : "/Stock",
+                    state: {
+                      symbol: this.state.symbol,
+                      name: this.state.name,
+                      price: this.state.price,
+                    },
+                  }}
+                >
+                  <p onClick={this.sendToUserStock}>Buy</p>
+                </Link>
+              </CentralBlock>
+            </MainBuy>
+            <Footer/>
+        </TestBlock>
     );
   }
 }
