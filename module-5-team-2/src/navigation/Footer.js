@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import {getUserBalance} from "../fetcher/Fetcher";
-
+import {Loader} from "../commonUI/Spinner";
+import {FooterLoader} from "../commonUI/Spinner-Footer";
 
 
 //Стили Компонента Footer начало
@@ -28,17 +29,15 @@ const FooterBlock = styled.div`
 `;
 const CurrentBalance = styled.p`
   font-size: 36px;
-  flex-basis: 57%;
-  span {
-    font-size: 18px;
-  }
+  margin-right: 47%;
 `;
 //Стили Компонента Footer Конец
 
 
 class Footer extends React.Component {
   state ={
-    balance:null
+    balance:null,
+    loading: true
   };
   // Функция выделяющая числа после точки для ее уменьшения в стилях в дальнейшем
   numberAfterDot = (value) =>{
@@ -48,26 +47,28 @@ class Footer extends React.Component {
     }
     else return null;
   } ;
-  componentDidMount() {
-    this.getBalance();
+  userBalance =()=>{
+    getUserBalance().then(balance => {
+      this.setState({balance:balance.currentBalance.toFixed(2)})
+    });
+  };
+  componentDidMount (){
+    setTimeout(this.userBalance,1000);
   }
 
-  getBalance = () =>{
-    getUserBalance().then(balance => this.setState({balance:balance.currentBalance.toFixed(2)}));
-  };
   render() {
     // Запрос и запись state значения баланса пользователя
-    
     // Элемент рисующий баланс пользователя
     const currentBalance =() => {
+      const {balance} = this.state;
       if(this.state.balance){
         return [
           <CurrentBalance key={'balance'}>
-            {Math.trunc(this.state.balance)}
-            <span>.{this.numberAfterDot(this.state.balance)}$</span>
+            {Math.trunc(balance)}
+            <span>.{this.numberAfterDot(balance)}$</span>
           </CurrentBalance>
         ];}
-      else return [<span key={'error'}>Loading....</span>]
+      else return [<FooterLoader key={'lg'}> </FooterLoader>]
     };
 
     return (

@@ -37,7 +37,6 @@ class App extends Component {
             <Route path="/" component={Account} />
           </Switch>
         </Router>
-        <Footer />
       </AppBlock>
     );
   }
