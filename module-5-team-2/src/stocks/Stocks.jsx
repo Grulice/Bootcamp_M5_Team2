@@ -31,6 +31,9 @@ const Container = styled.main`
     & > div > div {
       border-bottom: 0.5px dashed lightgrey;
     }
+    & > div > div:hover {
+      border-bottom: none;
+    }
     &:last-child > div > div {
       border-bottom: none;
     }
@@ -102,10 +105,10 @@ class Stocks extends Component {
     });
 
     return (
+
       <StocksContainer>
         <Container>
           <Search value={value} handleChange={this.handleSearch} />
-
           {rows.length !== 0 ? (
             <Paginator rowElems={rows} />
           ) : value === "" ? (

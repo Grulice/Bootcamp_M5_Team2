@@ -12,7 +12,7 @@ const Container = styled.div`
   }
 `;
 
-function PickDate(handleStartDate, handleEndDate) {
+function PickDate(props) {
   const [startDate, setStartDate] = useState(
     new Date().setDate(new Date().getDate() - 7)
   );
@@ -25,7 +25,7 @@ function PickDate(handleStartDate, handleEndDate) {
           selected={startDate}
           onChange={(date) => {
             setStartDate(date);
-            handleStartDate.handleStartDate(date.toISOString());
+            props.handleStartDate(date.toISOString());
           }}
           selectsStart
           startDate={startDate}
@@ -40,7 +40,7 @@ function PickDate(handleStartDate, handleEndDate) {
           selected={endDate}
           onChange={(date) => {
             setEndDate(date);
-            handleEndDate.handleEndDate(date.toISOString());
+            props.handleEndDate(date.toISOString());
           }}
           selectsEnd
           startDate={startDate}
