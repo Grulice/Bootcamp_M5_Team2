@@ -1,10 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import arrow from "../img/arrow.svg";
-import { addNewStock, changeBalance, getUserBalance} from "../fetcher/Fetcher";
-import Footer from "../navigation/Footer";
-import {MainBuy,CentralBlock,TestBlock,HeaderBuy,PriceText,BuyFor,InputBlock,InputLenght} from "./styleBuy";
+import {
+  MainBuy,
+  CentralBlock,
+  TestBlock,
+  HeaderBuy,
+  PriceText,
+  BuyFor,
+  InputBlock,
+  InputLenght,
+} from "./styleBuy";
 import styled from "styled-components";
 import PickDate from "./PickDateComponent";
 import {
@@ -78,28 +84,28 @@ class Buy extends React.Component {
   };
   // Функция уменьшения значения в input
   handlerMinus = () => {
-    if (this.state.pieces <=0) this.setState({ pieces: 0 });
+    if (this.state.pieces <= 0) this.setState({ pieces: 0 });
     else this.setState({ pieces: +this.state.pieces - 1 });
   };
   //Функция отправки полученных данных на API команды начало ****
   sendToUserStock = () => {
-      const objectOfData = {
-        name: `${this.state.name}`,
-        price: `${this.state.price}`,
-        symbol: `${this.state.symbol}`,
-        pieces: `${this.state.pieces}`,
-      };
-      const elements = this.state.pieces * this.state.price;
-      if (elements <= 0 || this.state.pieces === "")
-        return alert("Должно быть больше нуля");
+    const objectOfData = {
+      name: `${this.state.name}`,
+      price: `${this.state.price}`,
+      symbol: `${this.state.symbol}`,
+      pieces: `${this.state.pieces}`,
+    };
+    const elements = this.state.pieces * this.state.price;
+    if (elements <= 0 || this.state.pieces === "")
+      return alert("Должно быть больше нуля");
+    else {
+      if (elements > this.state.balance) alert("Недостаточно средств");
       else {
-        if (elements > this.state.balance) alert("Недостаточно средств");
-        else {
-          const currentBalance = this.state.balance - elements;
-          changeBalance(currentBalance);
-          addNewStock(objectOfData);
-        }
+        const currentBalance = this.state.balance - elements;
+        changeBalance(currentBalance);
+        addNewStock(objectOfData);
       }
+    }
   };
 
   //Функция отправки полученных данных на API команды конец ****
@@ -203,8 +209,12 @@ class Buy extends React.Component {
               />
 
               {this.state.isAvailable && this.state.chartInfo && (
-                <LineChart margin={{ top: 5, right: 30, left: 20, bottom: 5 }} 
-                width={600} height={300} data={this.state.chartInfo}>
+                <LineChart
+                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                  width={600}
+                  height={300}
+                  data={this.state.chartInfo}
+                >
                   <Line type="monotone" dataKey="open" stroke="blueviolet" />
                   <Tooltip />
                   <CartesianGrid stroke="#ccc" />
@@ -215,7 +225,7 @@ class Buy extends React.Component {
                       angle: -90,
                       position: "insideLeft",
                       fontSize: 16,
-                      offset:0
+                      offset: 0,
                     }}
                     type="number"
                     domain={["auto", "auto"]}
