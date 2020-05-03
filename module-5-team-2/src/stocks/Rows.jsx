@@ -19,7 +19,7 @@ const Row = styled.div`
   }
 `;
 
-class RowElement extends Component {
+class Rows extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -38,4 +38,4 @@ class RowElement extends Component {
   }
 }
 
-export default RowElement;
+export default Rows;
