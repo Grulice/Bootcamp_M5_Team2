@@ -202,8 +202,11 @@ class Buy extends React.Component {
       if (elements > this.state.balance) alert("Недостаточно средств");
       else {
         const currentBalance = this.state.balance - elements;
-        changeBalance(currentBalance);
+        changeBalance(currentBalance).then((res) =>
+          this.props.getBalanceCallback()
+        );
         addNewStock(objectOfData);
+        console.log(this.props.getBalanceCallback);
       }
     }
   };
@@ -309,8 +312,12 @@ class Buy extends React.Component {
               />
 
               {this.state.isAvailable && this.state.chartInfo && (
-                <LineChart margin={{ top: 5, right: 30, left: 20, bottom: 5 }} 
-                width={600} height={300} data={this.state.chartInfo}>
+                <LineChart
+                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                  width={600}
+                  height={300}
+                  data={this.state.chartInfo}
+                >
                   <Line type="monotone" dataKey="open" stroke="blueviolet" />
                   <Tooltip />
                   <CartesianGrid stroke="#ccc" />
@@ -321,7 +328,7 @@ class Buy extends React.Component {
                       angle: -90,
                       position: "insideLeft",
                       fontSize: 16,
-                      offset:0
+                      offset: 0,
                     }}
                     type="number"
                     domain={["auto", "auto"]}
@@ -331,7 +338,6 @@ class Buy extends React.Component {
             </ChartContainer>
           </CentralBlock>
         </MainBuy>
-        <Footer />
       </TestBlock>
     );
   }

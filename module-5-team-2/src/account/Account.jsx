@@ -210,7 +210,6 @@ class Account extends Component {
               <Loader> </Loader>
             )}
           </AccountPage>
-          <Footer/>
         </AccountContainer>
     );
   }
