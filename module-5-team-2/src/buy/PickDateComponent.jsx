@@ -1,16 +1,7 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import styled from "styled-components";
-
-const Container = styled.div`
-  margin: 10px;
-  display: inline-block;
-  input {
-    padding: 5px;
-    cursor: pointer;
-  }
-`;
+import { Container } from "./stylePickDateComponent";
 
 function PickDate(props) {
   const [startDate, setStartDate] = useState(

@@ -1,8 +1,6 @@
 import React from "react";
-import { getUserBalance } from "../fetcher/Fetcher";
-import {FooterBlock,CurrentBalance} from "./styleNavigation";
+import { FooterBlock, CurrentBalance } from "./styleNavigation";
 import { FooterLoader } from "../commonUI/Spinner-Footer";
-
 
 class Footer extends React.Component {
   state = {};

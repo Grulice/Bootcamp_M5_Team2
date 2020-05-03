@@ -1,53 +1,18 @@
 import React, { Component } from "react";
-import styled from "styled-components";
-
 import AccountRowElement from "./AccountRowElement";
 import Paginator from "../commonUI/Paginator";
 import * as fetcher from "../fetcher/Fetcher";
-import Footer from "../navigation/Footer";
-import {Loader} from "../commonUI/Spinner";
+import { Loader } from "../commonUI/Spinner";
+import {
+  DecPartSpan,
+  AccountContainer,
+  AccountPage,
+  Header,
+  TotalSum,
+  Profit,
+  Body,
+} from "./styleAccount";
 
-const AccountPage = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-`;
-const AccountContainer = styled.div`
-  width: 100%;
-`;
-const Header = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 30px;
-  /* box-shadow: 0 6px 6px -6px gray; */
-`;
-
-const TotalSum = styled.h1`
-  text-align: center;
-`;
-
-const Profit = styled.p`
-  text-align: center;
-  color: ${(props) => (props.sign < 0 ? "red" : "green")};
-`;
-
-const Body = styled.div`
-  width: 100%;
-  padding: 20px 20%;
-  -webkit-box-shadow: inset 0px 6px 6px -6px gray;
-  -moz-box-shadow: inset 0px 6px 6px -6px gray;
-  box-shadow: inset 0px 6px 6px -6px gray;
-`;
-
-const DecPartSpan = styled.span`
-  font-size: 0.7em;
-`;
-const Loading = styled.h2`
-  position: absolute;
-  left: 46%;
-  top: 240px;
-`;
 class Account extends Component {
   constructor(props) {
     super(props);
@@ -78,6 +43,7 @@ class Account extends Component {
         let profit = currentTotal - totalSpent;
         let sign = Math.sign(profit);
 
+        // Only setState if the component is still mounted (fetch may return after the component unmounted)
         this.setState({
           accountInfo: accountInfo,
           stocksInfo: stocksInfo,
@@ -192,25 +158,28 @@ class Account extends Component {
     });
 
     return (
-        <AccountContainer>
-          <AccountPage>
-            {this.state.loading ? (
-              <>
-                <Header>
-                  <TotalSum>{this.splitDecimals(currentTotal)}</TotalSum>
-                  <Profit sign={this.state.sign}>
-                    {this.getProfitAndPercentageComponent(totalSpent, currentTotal)}
-                  </Profit>
-                </Header>
-                <Body>
-                  <Paginator rowElems={rowElems} />
-                </Body>
-              </>
-            ) : (
-              <Loader> </Loader>
-            )}
-          </AccountPage>
-        </AccountContainer>
+      <AccountContainer>
+        <AccountPage>
+          {this.state.loading ? (
+            <>
+              <Header>
+                <TotalSum>{this.splitDecimals(currentTotal)}</TotalSum>
+                <Profit sign={this.state.sign}>
+                  {this.getProfitAndPercentageComponent(
+                    totalSpent,
+                    currentTotal
+                  )}
+                </Profit>
+              </Header>
+              <Body>
+                <Paginator rowElems={rowElems} />
+              </Body>
+            </>
+          ) : (
+            <Loader> </Loader>
+          )}
+        </AccountPage>
+      </AccountContainer>
     );
   }
 }

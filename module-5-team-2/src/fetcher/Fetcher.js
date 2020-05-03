@@ -21,16 +21,20 @@ export function changeBalance(newSumm) {
 }
 //Функция смены количества акций вместо добовления новый блок (Дополнительно)
 export function changeStock(updatedStock) {
-  fetch("https://5e8da89e22d8cd0016a798db.mockapi.io/users/2/stocks/"+updatedStock.id, {
-    method: "PUT",
-    body: JSON.stringify({
-      amount: updatedStock.amount,
-      totalPrice:updatedStock.totalPrice,
-    }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  fetch(
+    "https://5e8da89e22d8cd0016a798db.mockapi.io/users/2/stocks/" +
+      updatedStock.id,
+    {
+      method: "PUT",
+      body: JSON.stringify({
+        amount: updatedStock.amount,
+        totalPrice: updatedStock.totalPrice,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 }
 //Функция запроса к серверу акций
 export function getStockData() {
@@ -63,20 +67,21 @@ export function addNewStock(obj) {
   });
 }
 
+// Вспомогательная функция к getStockPricesFor. Делит массив на подмассивы заданной длины
 const chunkArray = (myArray, chunk_size) => {
-  var index = 0;
-  var arrayLength = myArray.length;
-  var tempArray = [];
+  let index = 0;
+  let arrayLength = myArray.length;
+  let tempArray = [];
 
   for (index = 0; index < arrayLength; index += chunk_size) {
     const myChunk = myArray.slice(index, index + chunk_size);
-    // Do something if you want with the group
     tempArray.push(myChunk);
   }
 
   return tempArray;
 };
 
+// Функция, которая возвращает нынешние цены по символам переданным в codes
 export function getStockPricesFor(codes) {
   if (codes.length === 0) return Promise.resolve([]);
 
@@ -115,6 +120,8 @@ export function getStockPricesFor(codes) {
     });
 }
 
+// ___ ДЛЯ ДОПОЛНИТЕЛЬНОГО ЗАДАНИЯ ___
+// Функция, которая возвращает исторические данные для данного символа по датам
 export function getHistoricalPrices(code, startDate, endDate) {
   return fetch(
     `https://financialmodelingprep.com/api/v3/historical-price-full/${code}?from=${startDate}&to=${endDate}`

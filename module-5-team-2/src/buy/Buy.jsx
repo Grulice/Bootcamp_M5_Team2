@@ -29,16 +29,15 @@ import {
   getUserBalance,
   getHistoricalPrices,
 } from "../fetcher/Fetcher";
-import Footer from "../navigation/Footer";
 
-// Стили Компонента Buy начало ****
+// Стили Компонента Chart начало ****
 const ChartContainer = styled.div`
   margin: 20px;
   padding: 20px;
   border-radius: 3px;
   border: 0.5px solid blueviolet;
 `;
-// Стили Компонента Buy Конец ****
+// Стили Компонента Chart Конец ****
 
 class Buy extends React.Component {
   state = {
@@ -103,6 +102,7 @@ class Buy extends React.Component {
       else {
         const currentBalance = this.state.balance - elements;
         changeBalance(currentBalance).then((res) =>
+        // обновить баланс в футере через коллбэк в App
           this.props.getBalanceCallback()
         );
         addNewStock(objectOfData);
@@ -211,7 +211,7 @@ class Buy extends React.Component {
                 handleEndDate={this.handleEndDate}
               />
 
-              {this.state.isAvailable && this.state.chartInfo && (
+              {this.state.isAvailable && (
                 <LineChart
                   margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
                   width={600}

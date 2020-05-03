@@ -5,43 +5,9 @@ import RowParts from "./RowParts";
 import Paginator from "../commonUI/Paginator";
 import { Link } from "react-router-dom";
 import * as fetcher from "../fetcher/Fetcher";
-import styled from "styled-components";
-import Footer from "../navigation/Footer";
 import { Loader } from "../commonUI/Spinner";
+import { StocksContainer, Container } from "./styleStocks";
 
-//Подробную информацию о работе данного компонента можно найти в файле README.md
-
-const Container = styled.main`
-  width: 100%;
-  min-height: calc(100vh - 90px - 90px);
-  -webkit-box-shadow: inset 0px 6px 6px -6px gray;
-  -moz-box-shadow: inset 0px 6px 6px -6px gray;
-  box-shadow: inset 0px 6px 6px -6px gray;
-  margin-top: 20px;
-  margin-bottom: 90px;
-  display: flex;
-  flex-direction: column;
-  padding: 0 20%;
-  h2 {
-    text-align: center;
-  }
-  a {
-    text-decoration: none;
-    font-family: "Roboto", sans-serif;
-    & > div > div {
-      border-bottom: 0.5px dashed lightgrey;
-    }
-    & > div > div:hover {
-      border-bottom: none;
-    }
-    &:last-child > div > div {
-      border-bottom: none;
-    }
-  }
-`;
-const StocksContainer = styled.div`
-  width: 100%;
-`;
 class Stocks extends Component {
   constructor(props) {
     super(props);
@@ -54,12 +20,10 @@ class Stocks extends Component {
 
   componentDidMount() {
     fetcher.getStockData().then((res) => {
-      console.log(this);
-      if (this)
-        this.setState({
-          allStocks: res.symbolsList,
-          filteredStocks: res.symbolsList,
-        });
+      this.setState({
+        allStocks: res.symbolsList,
+        filteredStocks: res.symbolsList,
+      });
     });
   }
 
@@ -105,7 +69,6 @@ class Stocks extends Component {
     });
 
     return (
-
       <StocksContainer>
         <Container>
           <Search value={value} handleChange={this.handleSearch} />

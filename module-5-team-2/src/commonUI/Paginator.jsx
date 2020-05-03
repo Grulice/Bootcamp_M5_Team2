@@ -1,14 +1,8 @@
 import React, { Component } from "react";
-import styled from "styled-components";
 import PaginatorPageBar from "./PaginatorPageBar";
+import { PaginatorMain, Page } from "./stylePaginator";
 
 const PAGE_SIZE = 20;
-
-const PaginatorMain = styled.div``;
-
-const Page = styled.div`
-  margin-bottom: 20px;
-`;
 
 class Paginator extends Component {
   constructor(props) {
