@@ -25,7 +25,6 @@ class Footer extends React.Component {
   componentDidMount() {
     setTimeout(this.userBalance, 1000);
   }
-
   render() {
     // Запрос и запись state значения баланса пользователя
     // Элемент рисующий баланс пользователя

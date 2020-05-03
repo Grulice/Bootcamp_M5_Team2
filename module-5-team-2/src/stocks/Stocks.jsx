@@ -28,6 +28,9 @@ const Container = styled.main`
     & > div > div {
       border-bottom: 0.5px dashed lightgrey;
     }
+    & > div > div:hover {
+      border-bottom: none;
+    }
     &:last-child > div > div {
       border-bottom: none;
     }
@@ -109,7 +112,6 @@ class Stocks extends Component {
                     <h2>Not Found</h2>
                 )}
             </Container>
-            <Footer />
         </StocksContainer>
 
     );

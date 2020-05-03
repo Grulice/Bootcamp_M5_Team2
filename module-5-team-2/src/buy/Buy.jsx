@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import arrow from "../img/arrow.svg";
-import { addNewStock, changeBalance, getUserBalance } from "../fetcher/Fetcher";
+import { addNewStock, changeBalance, getUserBalance} from "../fetcher/Fetcher";
 import Footer from "../navigation/Footer";
 import {MainBuy,CentralBlock,TestBlock,HeaderBuy,PriceText,BuyFor,InputBlock,InputLenght} from "./styleBuy";
 
@@ -38,28 +38,28 @@ class Buy extends React.Component {
   };
   // Функция уменьшения значения в input
   handlerMinus = () => {
-    if (this.state.pieces === 0) this.setState({ pieces: 0 });
+    if (this.state.pieces <=0) this.setState({ pieces: 0 });
     else this.setState({ pieces: +this.state.pieces - 1 });
   };
   //Функция отправки полученных данных на API команды начало ****
   sendToUserStock = () => {
-    const objectOfData = {
-      name: `${this.state.name}`,
-      price: `${this.state.price}`,
-      symbol: `${this.state.symbol}`,
-      pieces: `${this.state.pieces}`,
-    };
-    const elements = this.state.pieces * this.state.price;
-    if (elements <= 0 || this.state.pieces === "")
-      return alert("Должно быть больше нуля");
-    else {
-      if (elements > this.state.balance) alert("Недостаточно средств");
+      const objectOfData = {
+        name: `${this.state.name}`,
+        price: `${this.state.price}`,
+        symbol: `${this.state.symbol}`,
+        pieces: `${this.state.pieces}`,
+      };
+      const elements = this.state.pieces * this.state.price;
+      if (elements <= 0 || this.state.pieces === "")
+        return alert("Должно быть больше нуля");
       else {
-        const currentBalance = this.state.balance - elements;
-        changeBalance(currentBalance);
-        addNewStock(objectOfData);
+        if (elements > this.state.balance) alert("Недостаточно средств");
+        else {
+          const currentBalance = this.state.balance - elements;
+          changeBalance(currentBalance);
+          addNewStock(objectOfData);
+        }
       }
-    }
   };
 
   //Функция отправки полученных данных на API команды конец ****

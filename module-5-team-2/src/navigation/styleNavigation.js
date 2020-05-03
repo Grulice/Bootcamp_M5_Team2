@@ -51,11 +51,6 @@ export const HeaderBlock = styled.div`
     font-family: "Roboto", sans-serif;
     padding: 8px;
   }
-  a:active,a:focus{
-    color: #833ae0;
-    border-bottom: 1px solid #833ae0;
-    margin-bottom: -1px;
-  }
   a:hover {
     color: #FFDC40;
     border-bottom: 1px solid #000000;
