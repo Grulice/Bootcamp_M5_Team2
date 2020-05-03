@@ -19,7 +19,19 @@ export function changeBalance(newSumm) {
     },
   });
 }
-
+//Функция смены количества акций вместо добовления новый блок (Дополнительно)
+export function changeStock(updatedStock) {
+  fetch("https://5e8da89e22d8cd0016a798db.mockapi.io/users/2/stocks/"+updatedStock.id, {
+    method: "PUT",
+    body: JSON.stringify({
+      amount: updatedStock.amount,
+      totalPrice:updatedStock.totalPrice,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+}
 //Функция запроса к серверу акций
 export function getStockData() {
   return fetch(
@@ -81,7 +93,6 @@ export function getStockPricesFor(codes) {
       )
     );
   }
-
   return Promise.all(fetches)
     .then((fetchResults) => {
       const results = [];
