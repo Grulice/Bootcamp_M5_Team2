@@ -8,6 +8,9 @@ import * as fetcher from "../fetcher/Fetcher";
 import styled from "styled-components";
 import Footer from "../navigation/Footer";
 import {Loader} from "../commonUI/Spinner";
+
+//Подробную информацию о работе данного компонента можно найти в файле README.md
+
 const Container = styled.main`
   width: 100%;
   min-height: calc(100vh - 90px - 90px);

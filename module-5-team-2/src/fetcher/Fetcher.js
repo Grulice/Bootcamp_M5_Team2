@@ -103,3 +103,11 @@ export function getStockPricesFor(codes) {
       return final;
     });
 }
+
+export function getHistoricalPrices(code, startDate, endDate){
+
+  return fetch(
+    `https://financialmodelingprep.com/api/v3/historical-price-full/${code}?from=${startDate}&to=${endDate}`
+  ).then((res) => res.json());
+  
+}
