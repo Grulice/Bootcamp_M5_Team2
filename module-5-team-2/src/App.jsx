@@ -7,6 +7,7 @@ import Stocks from "./stocks/Stocks";
 import Buy from "./buy/Buy";
 import styled from "styled-components";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import * as fetcher from "./fetcher/Fetcher";
 
 const AppBlock = styled.div`
   display: flex;
@@ -22,8 +23,21 @@ const AppBlock = styled.div`
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { balance: 0, loadingBalance: false };
   }
+
+  // Balance update logic
+
+  componentDidMount() {
+    this.getUserBalance();
+  }
+
+  getUserBalance = () => {
+    this.setState({ loadingBalance: true });
+    fetcher.getUserBalance().then((balance) => {
+      this.setState({ balance: balance.currentBalance, loadingBalance: false });
+    });
+  };
 
   render() {
     return (
@@ -33,11 +47,20 @@ class App extends Component {
           <Switch>
             <Route path="/Account" exact component={Account} />
             <Route path="/Stock" component={Stocks} />
-            <Route path="/Buy" component={Buy} />
+            <Route
+              path="/Buy"
+              render={(props) => (
+                <Buy {...props} getBalanceCallback={this.getUserBalance} />
+              )}
+            />
             <Route path="/" component={Account} />
           </Switch>
         </Router>
-        <Footer />
+        <Footer
+          balanceVal={this.state.balance}
+          loadingBalance={this.state.loadingBalance}
+        />
+
       </AppBlock>
     );
   }

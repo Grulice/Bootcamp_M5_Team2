@@ -7,7 +7,7 @@ export function getUserBalance() {
 
 //Функция смены баланса пользователя
 export function changeBalance(newSumm) {
-  fetch("https://5e8da89e22d8cd0016a798db.mockapi.io/users/2", {
+  return fetch("https://5e8da89e22d8cd0016a798db.mockapi.io/users/2", {
     method: "PUT",
     body: JSON.stringify({
       id: "2",
@@ -115,10 +115,8 @@ export function getStockPricesFor(codes) {
     });
 }
 
-export function getHistoricalPrices(code, startDate, endDate){
-
+export function getHistoricalPrices(code, startDate, endDate) {
   return fetch(
     `https://financialmodelingprep.com/api/v3/historical-price-full/${code}?from=${startDate}&to=${endDate}`
   ).then((res) => res.json());
-  
 }

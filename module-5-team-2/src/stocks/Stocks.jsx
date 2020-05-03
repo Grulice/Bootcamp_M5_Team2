@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import * as fetcher from "../fetcher/Fetcher";
 import styled from "styled-components";
 import Footer from "../navigation/Footer";
-import {Loader} from "../commonUI/Spinner";
+import { Loader } from "../commonUI/Spinner";
 
 //Подробную информацию о работе данного компонента можно найти в файле README.md
 
@@ -54,10 +54,12 @@ class Stocks extends Component {
 
   componentDidMount() {
     fetcher.getStockData().then((res) => {
-      this.setState({
-        allStocks: res.symbolsList,
-        filteredStocks: res.symbolsList,
-      });
+      console.log(this);
+      if (this)
+        this.setState({
+          allStocks: res.symbolsList,
+          filteredStocks: res.symbolsList,
+        });
     });
   }
 
@@ -103,20 +105,19 @@ class Stocks extends Component {
     });
 
     return (
-        <StocksContainer>
-            <Container>
-                <Search value={value} handleChange={this.handleSearch} />
 
-                {rows.length !== 0 ? (
-                    <Paginator rowElems={rows} />
-                ) : value === "" ? (
-                    <Loader> </Loader>
-                ) : (
-                    <h2>Not Found</h2>
-                )}
-            </Container>
-        </StocksContainer>
-
+      <StocksContainer>
+        <Container>
+          <Search value={value} handleChange={this.handleSearch} />
+          {rows.length !== 0 ? (
+            <Paginator rowElems={rows} />
+          ) : value === "" ? (
+            <Loader> </Loader>
+          ) : (
+            <h2>Not Found</h2>
+          )}
+        </Container>
+      </StocksContainer>
     );
   }
 }

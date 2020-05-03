@@ -102,8 +102,11 @@ class Buy extends React.Component {
       if (elements > this.state.balance) alert("Недостаточно средств");
       else {
         const currentBalance = this.state.balance - elements;
-        changeBalance(currentBalance);
+        changeBalance(currentBalance).then((res) =>
+          this.props.getBalanceCallback()
+        );
         addNewStock(objectOfData);
+        console.log(this.props.getBalanceCallback);
       }
     }
   };
@@ -235,7 +238,6 @@ class Buy extends React.Component {
             </ChartContainer>
           </CentralBlock>
         </MainBuy>
-        <Footer />
       </TestBlock>
     );
   }

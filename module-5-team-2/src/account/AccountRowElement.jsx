@@ -71,7 +71,6 @@ class RowElement extends Component {
 
   render() {
     const { code, name, amount, purchasePrice, profit, sign } = this.props;
-    console.log();
     return (
       <RowContainer>
         <Row>
