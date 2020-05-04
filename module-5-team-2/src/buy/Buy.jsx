@@ -106,7 +106,6 @@ class Buy extends React.Component {
           this.props.getBalanceCallback()
         );
         addNewStock(objectOfData);
-        console.log(this.props.getBalanceCallback);
       }
     }
   };
