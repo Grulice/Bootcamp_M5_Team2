@@ -21,8 +21,8 @@ class Stocks extends Component {
   componentDidMount() {
     fetcher.getStockData().then((res) => {
       this.setState({
-        allStocks: res.symbolsList,
-        filteredStocks: res.symbolsList,
+        allStocks: res,
+        filteredStocks: res,
       });
     });
   }

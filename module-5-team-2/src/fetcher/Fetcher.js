@@ -39,7 +39,7 @@ export function changeStock(updatedStock) {
 //Функция запроса к серверу акций
 export function getStockData() {
   return fetch(
-    "https://financialmodelingprep.com/api/v3/company/stock/list"
+    "https://fmpcloud.io/api/v3/stock/list?apikey=e8b028031b6229f8c46c81d34527b5fd"
   ).then((res) => res.json());
 }
 

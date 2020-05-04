@@ -60,7 +60,6 @@ class App extends Component {
           balanceVal={this.state.balance}
           loadingBalance={this.state.loadingBalance}
         />
-
       </AppBlock>
     );
   }

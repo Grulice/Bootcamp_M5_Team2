@@ -102,7 +102,7 @@ class Buy extends React.Component {
       else {
         const currentBalance = this.state.balance - elements;
         changeBalance(currentBalance).then((res) =>
-        // обновить баланс в футере через коллбэк в App
+          // обновить баланс в футере через коллбэк в App
           this.props.getBalanceCallback()
         );
         addNewStock(objectOfData);
