@@ -28,7 +28,10 @@ class Paginator extends Component {
   };
 
   componentDidUpdate() {
-    if (this.state.curPage > Math.ceil(this.props.rowElems.length / PAGE_SIZE))
+    if (
+      this.state.curPage >
+      Math.ceil(this.props.rowElems.length / PAGE_SIZE) + 1
+    )
       this.setState({ curPage: 1 });
   }
 
