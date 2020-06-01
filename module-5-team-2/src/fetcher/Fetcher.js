@@ -1,3 +1,5 @@
+const API_KEY = `e8b028031b6229f8c46c81d34527b5fd`;
+
 //Функция запроса баланса
 export function getUserBalance() {
   return fetch(
@@ -39,7 +41,7 @@ export function changeStock(updatedStock) {
 //Функция запроса к серверу акций
 export function getStockData() {
   return fetch(
-    "https://fmpcloud.io/api/v3/stock/list?apikey=e8b028031b6229f8c46c81d34527b5fd"
+    `https://fmpcloud.io/api/v3/stock/list?apikey=${API_KEY}`
   ).then((res) => res.json());
 }
 
@@ -94,7 +96,7 @@ export function getStockPricesFor(codes) {
     let codesString = chunk.join(",");
     fetches.push(
       fetch(
-        `https://financialmodelingprep.com/api/v3/company/profile/${codesString}`
+        `https://financialmodelingprep.com/api/v3/company/profile/${codesString}?apikey=${API_KEY}`
       )
     );
   }
@@ -124,6 +126,6 @@ export function getStockPricesFor(codes) {
 // Функция, которая возвращает исторические данные для данного символа по датам
 export function getHistoricalPrices(code, startDate, endDate) {
   return fetch(
-    `https://financialmodelingprep.com/api/v3/historical-price-full/${code}?from=${startDate}&to=${endDate}`
+    `https://financialmodelingprep.com/api/v3/historical-price-full/${code}?from=${startDate}&to=${endDate}&apikey=${API_KEY}`
   ).then((res) => res.json());
 }
